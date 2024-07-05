@@ -32,6 +32,9 @@ func Setup() (app App, err error) {
 	}
 
 	database, err := db.ConnectDb(*conf)
+	if err != nil {
+		return app, fmt.Errorf("unable to connect to db: %s", err.Error())
+	}
 
 	return Load(
 		conf,

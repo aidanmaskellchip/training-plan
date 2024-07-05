@@ -31,12 +31,12 @@ func Get() (*Config, error) {
 		AppEnv:     "",
 		Port:       "4000",
 		Version:    "0.0.1",
-		DbHost:     "host.docker.internal",
+		DbHost:     "127.0.0.1",
 		DbDriver:   "postgres",
-		DbUser:     "tp_user",
-		DbPassword: "tp_pword",
-		DbName:     "tp_db",
-		DbPort:     "5432",
+		DbUser:     "training-plan_user",
+		DbPassword: "training-plan_password",
+		DbName:     "training-plan_db",
+		DbPort:     "8432",
 	}
 
 	err := envconfig.Process("", cfg)
