@@ -24,6 +24,7 @@ setup:
 	make go-vendor-download
 	make -i stop-db
 	make setup-db
+	make run-migrations
 	make start-server
 
 docker-build-go-image:
@@ -44,6 +45,9 @@ stop-db:
 
 start-server:
 	go run ./cmd/api
+
+run-migrations:
+	go run cmd/fixture/main.go
 
 ##############
 ##### Go #####

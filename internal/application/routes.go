@@ -15,6 +15,7 @@ func (app *App) Routes() *httprouter.Router {
 
 	//admin
 	router.HandlerFunc(http.MethodGet, "/v1/healthcheck", app.HealthcheckHandler)
+	router.HandlerFunc(http.MethodGet, "/v1/ping", app.PingDBHandler)
 
 	return router
 }

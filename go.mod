@@ -3,6 +3,7 @@ module training-plan
 go 1.22.4
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/stretchr/testify v1.9.0

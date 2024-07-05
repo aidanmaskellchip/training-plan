@@ -20,3 +20,10 @@ func (app *App) HealthcheckHandler(w http.ResponseWriter, r *http.Request) {
 		response.ServerErrorResponse(w, r)
 	}
 }
+
+func (app *App) PingDBHandler(w http.ResponseWriter, r *http.Request) {
+	if err := app.DB.Exec("SELECT 1").Error; err != nil {
+		response.ServerErrorResponse(w, r)
+	}
+	response.WriteJSON(w, http.StatusOK, response.Envelope{"msg": "db says hello"}, nil)
+}
