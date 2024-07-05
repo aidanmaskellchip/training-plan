@@ -1,6 +1,6 @@
-FROM golang:1.21-alpine as go
+FROM golang:1.22-alpine as go
 
-# Creates an app directory to hold your app’s source code
+# Creates an application directory to hold your application’s source code
 WORKDIR /app
 
 RUN apk add --no-cache git
