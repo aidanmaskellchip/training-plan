@@ -39,8 +39,8 @@ func NewRepos(db *gorm.DB) *Repositories {
 	}
 }
 
-func NewMockRepos() Repositories {
-	return Repositories{
+func NewMockRepos() *Repositories {
+	return &Repositories{
 		UserRepository:           UserRepoMock{},
 		RunningProfileRepository: RunningProfileRepoMock{},
 		PlanRepository:           PlanRepoMock{},

@@ -34,6 +34,6 @@ func BadRequestResponse(w http.ResponseWriter, r *http.Request, err error) {
 	ErrorResponse(w, r, http.StatusBadRequest, err.Error())
 }
 
-func FailedValidationResponse(w http.ResponseWriter, r *http.Request, errors map[string]string) {
+func FailedValidationResponse(w http.ResponseWriter, r *http.Request, errors transport.Envelope) {
 	ErrorResponse(w, r, http.StatusUnprocessableEntity, errors)
 }

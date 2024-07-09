@@ -47,7 +47,7 @@ start-server:
 	go run ./cmd/api
 
 run-migrations:
-	go run cmd/fixture/main.go
+	go run cmd/fixture/migrate/main.go
 
 ##############
 ##### Go #####
@@ -65,4 +65,4 @@ go-vendor-download:
 	make go-run-cmd cmd='go mod vendor'
 
 go-tests:
-	make go-run-cmd cmd='go test -v ./...'
+	make go-run-cmd cmd='go test -v'
