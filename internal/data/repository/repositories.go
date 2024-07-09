@@ -2,33 +2,38 @@ package repository
 
 import (
 	"errors"
+	"training-plan/internal/data/model"
 
 	"gorm.io/gorm"
 )
 
 var ErrNoRecord = errors.New("no matching record found")
 
+type UserRepository interface {
+	Create(user model.User) error
+}
+type RunningProfileRepository interface {
+	Create(profile model.RunningProfile) error
+}
+type PlanRepository interface {
+	Create(plan model.Plan) error
+}
+
 type Repositories struct {
-	User interface {
-		Create() error
-	}
-	RunningProfile interface {
-		Create() error
-	}
-	Plan interface {
-		Create() error
-	}
+	UserRepository
+	RunningProfileRepository
+	PlanRepository
 }
 
 func NewRepos(db *gorm.DB) *Repositories {
 	return &Repositories{
-		User: UserRepo{
+		UserRepository: UserRepo{
 			db: db,
 		},
-		RunningProfile: RunningProfileRepo{
+		RunningProfileRepository: RunningProfileRepo{
 			db: db,
 		},
-		Plan: PlanRepo{
+		PlanRepository: PlanRepo{
 			db: db,
 		},
 	}
@@ -36,8 +41,8 @@ func NewRepos(db *gorm.DB) *Repositories {
 
 func NewMockRepos() Repositories {
 	return Repositories{
-		User:           UserRepoMock{},
-		RunningProfile: RunningProfileRepoMock{},
-		Plan:           PlanRepoMock{},
+		UserRepository:           UserRepoMock{},
+		RunningProfileRepository: RunningProfileRepoMock{},
+		PlanRepository:           PlanRepoMock{},
 	}
 }

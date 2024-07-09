@@ -3,12 +3,13 @@ package response
 import (
 	"fmt"
 	"net/http"
+	"training-plan/internal/transport"
 )
 
 func ErrorResponse(w http.ResponseWriter, r *http.Request, status int, message any) {
-	env := Envelope{"error": message}
+	env := transport.Envelope{"error": message}
 
-	err := WriteJSON(w, status, env, nil)
+	err := transport.WriteJSON(w, status, env, nil)
 	if err != nil {
 		w.WriteHeader(500)
 	}
