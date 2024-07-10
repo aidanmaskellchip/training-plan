@@ -39,8 +39,10 @@ func (app *App) FindUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
-		"msg":  "success",
-		"data": user,
+		"msg": "success",
+		"data": transport.Envelope{
+			"user": user,
+		},
 	}, nil)
 
 	if err != nil {

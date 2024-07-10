@@ -2,16 +2,21 @@ package query
 
 import (
 	"training-plan/internal/data/domain"
-	"training-plan/internal/data/model"
 	"training-plan/internal/data/repository"
+	"training-plan/internal/transport/response"
 )
 
-func FindUserQuery(id *string, repos *repository.Repositories) (user model.User, err error) {
+func FindUserQuery(id *string, repos *repository.Repositories) (res *response.FindUserResponse, err error) {
 	userID := domain.NewUserID(*id)
 
-	if user, err = repos.UserRepository.FindByID(userID.ID); err != nil {
-		return user, err
+	user, err := repos.UserRepository.FindByID(userID.ID)
+	if err != nil {
+		return res, err
 	}
 
-	return user, nil
+	return &response.FindUserResponse{
+		ID:        user.ID.String(),
+		Username:  user.Username,
+		CreatedAt: user.CreatedAt,
+	}, nil
 }
