@@ -12,3 +12,7 @@ type UserRepoMock struct {
 func (ur UserRepoMock) Create(user model.User) error {
 	return nil
 }
+
+func (ur UserRepoMock) FindByID(id string) (user model.User, err error) {
+	return user, nil
+}

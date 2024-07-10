@@ -11,6 +11,7 @@ var ErrNoRecord = errors.New("no matching record found")
 
 type UserRepository interface {
 	Create(user model.User) error
+	FindByID(id string) (user model.User, err error)
 }
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error

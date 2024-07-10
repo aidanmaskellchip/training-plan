@@ -20,5 +20,11 @@ func (app *App) Routes() *httprouter.Router {
 	//user
 	router.HandlerFunc(http.MethodPost, "/v1/users/create", app.CreateUserHandler)
 
+	//running profile
+	router.HandlerFunc(http.MethodPost, "/v1/running-profiles/create", app.CreateRunningProfileHandler)
+
+	//plan
+	router.HandlerFunc(http.MethodPost, "/v1/plans/create", app.CreatePlanHandler)
+
 	return router
 }

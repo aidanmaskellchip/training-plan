@@ -27,3 +27,23 @@ func (app *App) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		response.ServerErrorResponse(w, r)
 	}
 }
+
+func (app *App) FindUserHandler(w http.ResponseWriter, r *http.Request) {
+	input := request.FindUserRequest{}
+
+	err := transport.ReadJSON(w, r, &input)
+	if err != nil {
+		response.BadRequestResponse(w, r, err)
+		return
+	}
+
+	if err = action.FindUserQuery(&input, app.Repos); err != nil {
+		response.BadRequestResponse(w, r, err)
+	}
+
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
+	if err != nil {
+		app.Logger.Println(err)
+		response.ServerErrorResponse(w, r)
+	}
+}
