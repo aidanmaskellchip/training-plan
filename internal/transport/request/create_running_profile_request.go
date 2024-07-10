@@ -2,7 +2,6 @@ package request
 
 import (
 	"github.com/google/uuid"
-	"time"
 )
 
 type CreateRunningProfileRequest struct {
@@ -17,10 +16,10 @@ type CreateRunningProfileRequest struct {
 	RunningDays         []int     `json:"running_days"`
 	RunningDaysPerWeek  int       `json:"running_days_per_week"`
 	LongRunDay          int       `json:"long_run_day"`
-	CurrentAbility      int       `json:"current_ability"`
+	CurrentAbility      string    `json:"current_ability"`
 	PlanLength          int       `json:"plan_length"`
-	StartDate           time.Time `json:"start_date"`
-	GoalDate            time.Time `json:"goal_date"`
+	StartDate           string    `json:"start_date"`
+	GoalDate            string    `json:"goal_date"`
 }
 
 func (c *CreateRunningProfileRequest) Validate() error {

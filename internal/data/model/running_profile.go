@@ -19,7 +19,7 @@ type RunningProfile struct {
 	RunningDays         []int     `json:"running_days" gorm:"type:json;"`
 	RunningDaysPerWeek  int       `json:"running_days_per_week" gorm:"type:int;"`
 	LongRunDay          int       `json:"long_run_day" gorm:"type:int;"`
-	CurrentAbility      int       `json:"current_ability" gorm:"type:int;"`
+	CurrentAbility      string    `json:"current_ability" gorm:"type:text;"`
 	PlanLength          int       `json:"plan_length" gorm:"type:int;"`
 	StartDate           time.Time `json:"start_date" gorm:"type:date;"`
 	GoalDate            time.Time `json:"goal_date" gorm:"type:date;"`

@@ -1,6 +1,7 @@
 package action
 
 import (
+	"time"
 	"training-plan/internal/data/model"
 	"training-plan/internal/data/repository"
 	"training-plan/internal/transport/request"
@@ -8,6 +9,12 @@ import (
 
 func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos *repository.Repositories) (err error) {
 	if err := data.Validate(); err != nil {
+		return err
+	}
+
+	startDate, err := time.Parse("2006-01-02", data.StartDate)
+	goalDate, err := time.Parse("2006-01-02", data.GoalDate)
+	if err != nil {
 		return err
 	}
 
@@ -25,8 +32,8 @@ func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos
 		LongRunDay:          data.LongRunDay,
 		CurrentAbility:      data.CurrentAbility,
 		PlanLength:          data.PlanLength,
-		StartDate:           data.StartDate,
-		GoalDate:            data.GoalDate,
+		StartDate:           startDate,
+		GoalDate:            goalDate,
 	}
 
 	if err := repos.RunningProfileRepository.Create(rp); err != nil {
