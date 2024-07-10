@@ -7,19 +7,15 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
-func ReadParam(r *http.Request, p string) (int64, error) {
+func ReadParam(r *http.Request, p string) string {
 	params := httprouter.ParamsFromContext(r.Context())
 
-	id, err := strconv.ParseInt(params.ByName(p), 10, 64)
-	if err != nil || id < 1 {
-		return 0, errors.New("invalid parameter")
-	}
+	param := params.ByName(p)
 
-	return id, nil
+	return param
 }
 
 type Envelope map[string]any

@@ -3,6 +3,7 @@ package application
 import (
 	"net/http"
 	"training-plan/internal/application/action"
+	"training-plan/internal/application/query"
 	"training-plan/internal/transport"
 	"training-plan/internal/transport/request"
 	"training-plan/internal/transport/response"
@@ -29,19 +30,19 @@ func (app *App) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *App) FindUserHandler(w http.ResponseWriter, r *http.Request) {
-	input := request.FindUserRequest{}
+	id := transport.ReadParam(r, "id")
 
-	err := transport.ReadJSON(w, r, &input)
+	user, err := query.FindUserQuery(&id, app.Repos)
 	if err != nil {
-		response.BadRequestResponse(w, r, err)
-		return
-	}
-
-	if err = action.FindUserQuery(&input, app.Repos); err != nil {
+		app.Logger.Println(err)
 		response.BadRequestResponse(w, r, err)
 	}
 
-	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
+		"msg":  "success",
+		"data": user,
+	}, nil)
+
 	if err != nil {
 		app.Logger.Println(err)
 		response.ServerErrorResponse(w, r)

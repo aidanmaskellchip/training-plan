@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"training-plan/internal/data/model"
 )
@@ -16,7 +17,7 @@ func (ur UserRepo) Create(user model.User) error {
 	return result.Error
 }
 
-func (ur UserRepo) FindByID(id string) (user model.User, err error) {
+func (ur UserRepo) FindByID(id uuid.UUID) (user model.User, err error) {
 	result := ur.db.First(&user, id)
 
 	if result.RowsAffected == 0 {
