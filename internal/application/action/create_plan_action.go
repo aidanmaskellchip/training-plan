@@ -1,9 +1,9 @@
 package action
 
 import (
-	"training-plan/internal/data/domain"
-	"training-plan/internal/data/model"
-	"training-plan/internal/data/repository"
+	"training-plan/internal/domain/model"
+	vo "training-plan/internal/domain/value_objects"
+	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"
 )
 
@@ -12,7 +12,7 @@ func CreatePlanAction(data *request.CreatePlanRequest, repos *repository.Reposit
 		return user, nil
 	}
 
-	userID := domain.NewUserID(data.UserID)
+	userID := vo.NewUserID(data.UserID)
 
 	if user, err = repos.UserRepository.FindByID(userID.ID); err != nil {
 		return user, err

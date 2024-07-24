@@ -1,4 +1,4 @@
-package domain
+package valueobjects
 
 import "github.com/google/uuid"
 

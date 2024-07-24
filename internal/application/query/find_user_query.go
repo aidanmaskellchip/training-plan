@@ -1,13 +1,13 @@
 package query
 
 import (
-	"training-plan/internal/data/domain"
-	"training-plan/internal/data/repository"
+	vo "training-plan/internal/domain/value_objects"
+	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/response"
 )
 
 func FindUserQuery(id *string, repos *repository.Repositories) (res *response.FindUserResponse, err error) {
-	userID := domain.NewUserID(*id)
+	userID := vo.NewUserID(*id)
 
 	user, err := repos.UserRepository.FindByID(userID.ID)
 	if err != nil {

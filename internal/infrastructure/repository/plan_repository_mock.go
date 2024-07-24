@@ -2,7 +2,7 @@ package repository
 
 import (
 	"gorm.io/gorm"
-	"training-plan/internal/data/model"
+	"training-plan/internal/domain/model"
 )
 
 type PlanRepoMock struct {

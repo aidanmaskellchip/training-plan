@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 	"training-plan/internal/application"
-	"training-plan/internal/config"
-	"training-plan/internal/data/repository"
+	"training-plan/internal/infrastructure/config"
+	"training-plan/internal/infrastructure/repository"
 )
 
 func NewTestApplication(t *testing.T) (app *application.App) {

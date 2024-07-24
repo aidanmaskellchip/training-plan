@@ -2,8 +2,9 @@ package action
 
 import (
 	"time"
-	"training-plan/internal/data/model"
-	"training-plan/internal/data/repository"
+	"training-plan/internal/domain/model"
+	valueobjects "training-plan/internal/domain/value_objects"
+	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"
 )
 
@@ -18,6 +19,12 @@ func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos
 		return err
 	}
 
+	rd := valueobjects.NewRunningDays(data.RunningDays)
+	rdJson, err := rd.ToJson()
+	if err != nil {
+		return err
+	}
+
 	rp := model.RunningProfile{
 		UserID:              data.UserID,
 		GoalDistance:        data.GoalDistance,
@@ -27,7 +34,7 @@ func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos
 		Current10K:          data.Current10K,
 		CurrentHalfMarathon: data.CurrentHalfMarathon,
 		CurrentFullMarathon: data.CurrentFullMarathon,
-		RunningDays:         data.RunningDays,
+		RunningDays:         rdJson,
 		RunningDaysPerWeek:  data.RunningDaysPerWeek,
 		LongRunDay:          data.LongRunDay,
 		CurrentAbility:      data.CurrentAbility,

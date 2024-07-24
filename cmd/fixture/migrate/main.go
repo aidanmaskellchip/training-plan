@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"training-plan/internal/application"
-	"training-plan/internal/database/migrator"
+	"training-plan/internal/infrastructure/database/migrator"
 )
 
 var app application.App

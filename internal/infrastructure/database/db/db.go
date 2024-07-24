@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"training-plan/internal/config"
-	dbdsn "training-plan/internal/database/db_dsn"
+	"training-plan/internal/infrastructure/config"
+	"training-plan/internal/infrastructure/database/db_dsn"
 )
 
 func ConnectDb(conf config.Config) (*gorm.DB, error) {

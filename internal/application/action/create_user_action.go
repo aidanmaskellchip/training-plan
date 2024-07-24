@@ -1,8 +1,8 @@
 package action
 
 import (
-	"training-plan/internal/data/model"
-	"training-plan/internal/data/repository"
+	"training-plan/internal/domain/model"
+	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"
 )
 

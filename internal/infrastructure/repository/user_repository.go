@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"training-plan/internal/data/model"
+	"training-plan/internal/domain/model"
 )
 
 type UserRepo struct {

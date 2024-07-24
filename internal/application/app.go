@@ -5,9 +5,9 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
-	"training-plan/internal/config"
-	"training-plan/internal/data/repository"
-	"training-plan/internal/database/db"
+	"training-plan/internal/infrastructure/config"
+	"training-plan/internal/infrastructure/database/db"
+	"training-plan/internal/infrastructure/repository"
 )
 
 type App struct {

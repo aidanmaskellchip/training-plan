@@ -16,7 +16,7 @@ type RunningProfile struct {
 	Current10K          int       `json:"current_10_k" gorm:"type:int;"`
 	CurrentHalfMarathon int       `json:"current_half_marathon" gorm:"type:int;"`
 	CurrentFullMarathon int       `json:"current_full_marathon" gorm:"type:int;"`
-	RunningDays         []int     `json:"running_days" gorm:"type:json;"`
+	RunningDays         []byte    `json:"running_days" gorm:"type:json;"`
 	RunningDaysPerWeek  int       `json:"running_days_per_week" gorm:"type:int;"`
 	LongRunDay          int       `json:"long_run_day" gorm:"type:int;"`
 	CurrentAbility      string    `json:"current_ability" gorm:"type:text;"`
