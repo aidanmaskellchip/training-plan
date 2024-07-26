@@ -1,6 +1,7 @@
 package action
 
 import (
+	"errors"
 	"time"
 	"training-plan/internal/domain/model"
 	valueobjects "training-plan/internal/domain/value_objects"
@@ -11,6 +12,11 @@ import (
 func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos *repository.Repositories) (err error) {
 	if err := data.Validate(); err != nil {
 		return err
+	}
+
+	_, err = repos.UserRepository.FindByID(data.UserID)
+	if err != nil {
+		return errors.New("user not found")
 	}
 
 	startDate, err := time.Parse("2006-01-02", data.StartDate)

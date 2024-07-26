@@ -23,5 +23,6 @@ type CreateRunningProfileRequest struct {
 }
 
 func (c *CreateRunningProfileRequest) Validate() error {
+	//todo: add validation
 	return nil
 }

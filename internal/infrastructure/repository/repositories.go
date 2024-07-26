@@ -14,6 +14,10 @@ type UserRepository interface {
 	Create(user model.User) error
 	FindByID(id uuid.UUID) (user model.User, err error)
 }
+type UserActivityRepository interface {
+	Create(ua model.UserActivity) error
+	FindByID(id uuid.UUID) (ua model.UserActivity, err error)
+}
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error
 	FindByID(id uuid.UUID) (rp model.RunningProfile, err error)
@@ -24,6 +28,7 @@ type PlanRepository interface {
 
 type Repositories struct {
 	UserRepository
+	UserActivityRepository
 	RunningProfileRepository
 	PlanRepository
 }
@@ -31,6 +36,9 @@ type Repositories struct {
 func NewRepos(db *gorm.DB) *Repositories {
 	return &Repositories{
 		UserRepository: UserRepo{
+			db: db,
+		},
+		UserActivityRepository: UserActivityRepo{
 			db: db,
 		},
 		RunningProfileRepository: RunningProfileRepo{
@@ -45,6 +53,7 @@ func NewRepos(db *gorm.DB) *Repositories {
 func NewMockRepos() *Repositories {
 	return &Repositories{
 		UserRepository:           UserRepoMock{},
+		UserActivityRepository:   UserActivityRepoMock{},
 		RunningProfileRepository: RunningProfileRepoMock{},
 		PlanRepository:           PlanRepoMock{},
 	}

@@ -20,6 +20,7 @@ func (app *App) CreateRunningProfileHandler(w http.ResponseWriter, r *http.Reque
 
 	if err = action.CreateRunningProfileAction(&input, app.Repos); err != nil {
 		response.BadRequestResponse(w, r, err)
+		return
 	}
 
 	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
@@ -36,6 +37,7 @@ func (app *App) FindRunningProfileHandler(w http.ResponseWriter, r *http.Request
 	if err != nil {
 		app.Logger.Println(err)
 		response.BadRequestResponse(w, r, err)
+		return
 	}
 
 	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
