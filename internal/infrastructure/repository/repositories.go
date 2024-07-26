@@ -3,7 +3,7 @@ package repository
 import (
 	"errors"
 	"github.com/google/uuid"
-	model2 "training-plan/internal/domain/model"
+	"training-plan/internal/domain/model"
 
 	"gorm.io/gorm"
 )
@@ -11,14 +11,15 @@ import (
 var ErrNoRecord = errors.New("no matching record found")
 
 type UserRepository interface {
-	Create(user model2.User) error
-	FindByID(id uuid.UUID) (user model2.User, err error)
+	Create(user model.User) error
+	FindByID(id uuid.UUID) (user model.User, err error)
 }
 type RunningProfileRepository interface {
-	Create(profile model2.RunningProfile) error
+	Create(profile model.RunningProfile) error
+	FindByID(id uuid.UUID) (rp model.RunningProfile, err error)
 }
 type PlanRepository interface {
-	Create(plan model2.Plan) error
+	Create(plan model.Plan) error
 }
 
 type Repositories struct {
