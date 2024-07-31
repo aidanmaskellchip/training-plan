@@ -1,6 +1,7 @@
 package action
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"training-plan/internal/infrastructure/repository"
@@ -21,6 +22,16 @@ func TestCreateUserAction(t *testing.T) {
 			name:    "Valid User",
 			request: request.CreateUserRequest{Username: "ValidUser"},
 			err:     nil,
+		},
+		{
+			name:    "No username provided",
+			request: request.CreateUserRequest{Username: ""},
+			err:     errors.New("username is required"),
+		},
+		{
+			name:    "Username too long",
+			request: request.CreateUserRequest{Username: "usernameistoolooooooooooooooooooooooooong"},
+			err:     errors.New("username is too long"),
 		},
 	}
 
