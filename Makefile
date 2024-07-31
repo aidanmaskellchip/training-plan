@@ -55,14 +55,5 @@ run-migrations:
 go-run-cmd:
 	docker run -it --rm --env-file ./.env -v ${DOCKER_VOLUME_APP_REF}:/go/src/app --network ${DOCKER_NETWORK_DB_REF} ${DOCKER_GO_IMAGE_REF} ${cmd}
 
-go-get-lib:
-	make go-run-cmd cmd='go get -v ${lib}'
-
-go-mod-tidy:
-	make go-run-cmd cmd='go mod tidy'
-
-go-vendor-download:
-	make go-run-cmd cmd='go mod vendor'
-
 go-tests:
 	go test -v ./...
