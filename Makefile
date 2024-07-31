@@ -65,4 +65,4 @@ go-vendor-download:
 	make go-run-cmd cmd='go mod vendor'
 
 go-tests:
-	make go-run-cmd cmd='go test -v'
+	go test -v ./...
