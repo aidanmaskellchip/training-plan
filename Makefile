@@ -57,3 +57,15 @@ go-run-cmd:
 
 go-tests:
 	go test -v ./...
+
+go-get-lib:
+	make go-run-cmd cmd='go get -v ${lib}'
+
+go-mod-tidy:
+	make go-run-cmd cmd='go mod tidy'
+
+go-build-cmd:
+	make go-run-cmd cmd='env GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -o .aws-sam/build/${buildir}/bootstrap cmd/lambda/${handler}/main.go'
+
+go-vendor-download:
+	make go-run-cmd cmd='go mod vendor'

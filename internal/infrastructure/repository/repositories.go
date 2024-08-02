@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"training-plan/internal/domain/model"
+	valueobjects "training-plan/internal/domain/value_objects"
 
 	"gorm.io/gorm"
 )
@@ -17,6 +18,10 @@ type UserRepository interface {
 type UserActivityRepository interface {
 	Create(ua model.UserActivity) error
 	FindByID(id uuid.UUID) (ua model.UserActivity, err error)
+	GetFastestUserActivity(userID uuid.UUID) (stats valueobjects.ActivityStats, err error)
+	GetLongestUserActivity(userID uuid.UUID) (stats valueobjects.ActivityStats, err error)
+	GetFastestCommunityActivity() (stats valueobjects.ActivityStats, err error)
+	GetLongestCommunityActivity() (stats valueobjects.ActivityStats, err error)
 }
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error

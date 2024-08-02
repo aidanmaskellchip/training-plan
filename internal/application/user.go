@@ -73,3 +73,33 @@ func (app *App) UploadUserActivityHandler(w http.ResponseWriter, r *http.Request
 		response.ServerErrorResponse(w, r)
 	}
 }
+
+func (app *App) GetUserStatsHandler(w http.ResponseWriter, r *http.Request) {
+	id := transport.ReadParam(r, "id")
+
+	_, err := query.FindUserQuery(&id, app.Repos)
+	if err != nil {
+		app.Logger.Println(err)
+		response.BadRequestResponse(w, r, err)
+		return
+	}
+
+	stats, err := query.GetUserStatsQuery(&id, app.Repos)
+	if err != nil {
+		app.Logger.Println(err)
+		response.BadRequestResponse(w, r, err)
+		return
+	}
+
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
+		"msg": "success",
+		"data": transport.Envelope{
+			"stats": stats,
+		},
+	}, nil)
+
+	if err != nil {
+		app.Logger.Println(err)
+		response.ServerErrorResponse(w, r)
+	}
+}
