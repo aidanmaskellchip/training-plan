@@ -32,42 +32,43 @@ func (ur UserActivityRepo) FindByID(id uuid.UUID) (ua model.UserActivity, err er
 }
 
 func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
-	//err = ur.db.
-	//	Where("user_id", "=", userID).
-	//	Select("min(pace) as Pace, user_id as UserID, distance as Distance").
-	//	Row().Scan(&stats)
-	//
-
-	//query := fmt.Sprintf("SELECT MIN(pace) as Pace, user_id as UserID, distance as Distance FROM user_activities WHERE user_id = %s", userID.String())
-	//err = ur.db.Raw(query).Scan(stats).Error
+	err = ur.db.Table("user_activities").
+		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Where("user_id = ?", userID).
+		Order("pace ASC").
+		Row().
+		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
 	return
 }
 
 func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Where("user_id", "=", userID).
-		Select("max(distance) as Distance, user_id as UserID, pace as Pace").
+		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Where("user_id = ?", userID).
+		Order("distance DESC").
 		Row().
-		Scan(&stats)
+		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
 	return
 }
 
 func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Select("min(pace) as Pace, user_id as UserID, distance as Distance").
+		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Order("pace ASC").
 		Row().
-		Scan(&stats)
+		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
 	return
 }
 
 func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Select("max(distance) as Distance, user_id as UserID, pace as Pace").
+		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Order("distance DESC").
 		Row().
-		Scan(&stats)
+		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
 	return
 }
