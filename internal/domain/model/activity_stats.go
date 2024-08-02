@@ -1,4 +1,4 @@
-package valueobjects
+package model
 
 type ActivityStats struct {
 	UserID   string  `json:"user_id"`

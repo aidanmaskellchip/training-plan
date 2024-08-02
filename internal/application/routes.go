@@ -21,7 +21,7 @@ func (app *App) Routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodPost, "/v1/users/create", app.CreateUserHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id", app.FindUserHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/users/activities/upload", app.UploadUserActivityHandler)
-	router.HandlerFunc(http.MethodGet, "/v1/users/:id/stats/overview", app.FindUserHandler)
+	router.HandlerFunc(http.MethodGet, "/v1/users/:id/stats/overview", app.GetUserStatsHandler)
 
 	//running profile
 	router.HandlerFunc(http.MethodGet, "/v1/running-profiles/:id", app.FindRunningProfileHandler)

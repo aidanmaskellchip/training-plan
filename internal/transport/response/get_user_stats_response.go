@@ -1,6 +1,8 @@
 package response
 
-import valueobjects "training-plan/internal/domain/value_objects"
+import (
+	valueobjects "training-plan/internal/domain/model"
+)
 
 type GetUserStatsResponse struct {
 	UserFastestRun      valueobjects.ActivityStats `json:"user_fastest_run"`

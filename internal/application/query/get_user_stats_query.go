@@ -3,6 +3,7 @@ package query
 import (
 	"errors"
 	"log"
+	"training-plan/internal/domain/model"
 	vo "training-plan/internal/domain/value_objects"
 	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/response"
@@ -51,8 +52,8 @@ func GetUserStatsQuery(id *string, repos *repository.Repositories) (res *respons
 	}, nil
 }
 
-func getUserFastestActivity(userID vo.UserID, repos *repository.Repositories) <-chan vo.ActivityStats {
-	statsChan := make(chan vo.ActivityStats)
+func getUserFastestActivity(userID vo.UserID, repos *repository.Repositories) <-chan model.ActivityStats {
+	statsChan := make(chan model.ActivityStats)
 
 	go func() {
 		act, err := repos.UserActivityRepository.GetFastestUserActivity(userID.ID)
@@ -67,8 +68,8 @@ func getUserFastestActivity(userID vo.UserID, repos *repository.Repositories) <-
 	return statsChan
 }
 
-func getCommunityFastestActivity(repos *repository.Repositories) <-chan vo.ActivityStats {
-	statsChan := make(chan vo.ActivityStats)
+func getCommunityFastestActivity(repos *repository.Repositories) <-chan model.ActivityStats {
+	statsChan := make(chan model.ActivityStats)
 
 	go func() {
 		act, err := repos.UserActivityRepository.GetFastestCommunityActivity()
@@ -83,8 +84,8 @@ func getCommunityFastestActivity(repos *repository.Repositories) <-chan vo.Activ
 	return statsChan
 }
 
-func getUserLongestActivity(userID vo.UserID, repos *repository.Repositories) <-chan vo.ActivityStats {
-	statsChan := make(chan vo.ActivityStats)
+func getUserLongestActivity(userID vo.UserID, repos *repository.Repositories) <-chan model.ActivityStats {
+	statsChan := make(chan model.ActivityStats)
 
 	go func() {
 		act, err := repos.UserActivityRepository.GetLongestUserActivity(userID.ID)
@@ -99,8 +100,8 @@ func getUserLongestActivity(userID vo.UserID, repos *repository.Repositories) <-
 	return statsChan
 }
 
-func getCommunityLongestActivity(repos *repository.Repositories) <-chan vo.ActivityStats {
-	statsChan := make(chan vo.ActivityStats)
+func getCommunityLongestActivity(repos *repository.Repositories) <-chan model.ActivityStats {
+	statsChan := make(chan model.ActivityStats)
 
 	go func() {
 		act, err := repos.UserActivityRepository.GetLongestCommunityActivity()

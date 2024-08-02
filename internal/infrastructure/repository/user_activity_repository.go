@@ -5,7 +5,6 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"training-plan/internal/domain/model"
-	valueobjects "training-plan/internal/domain/value_objects"
 )
 
 type UserActivityRepo struct {
@@ -32,17 +31,20 @@ func (ur UserActivityRepo) FindByID(id uuid.UUID) (ua model.UserActivity, err er
 	return ua, nil
 }
 
-func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats valueobjects.ActivityStats, err error) {
-	err = ur.db.Table("user_activities").
-		Where("user_id", "=", userID).
-		Select("min(pace) as Pace, user_id as UserID, distance as Distance").
-		Row().
-		Scan(&stats)
+func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
+	//err = ur.db.
+	//	Where("user_id", "=", userID).
+	//	Select("min(pace) as Pace, user_id as UserID, distance as Distance").
+	//	Row().Scan(&stats)
+	//
+
+	//query := fmt.Sprintf("SELECT MIN(pace) as Pace, user_id as UserID, distance as Distance FROM user_activities WHERE user_id = %s", userID.String())
+	//err = ur.db.Raw(query).Scan(stats).Error
 
 	return
 }
 
-func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats valueobjects.ActivityStats, err error) {
+func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Where("user_id", "=", userID).
 		Select("max(distance) as Distance, user_id as UserID, pace as Pace").
@@ -52,7 +54,7 @@ func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats value
 	return
 }
 
-func (ur UserActivityRepo) GetFastestCommunityActivity() (stats valueobjects.ActivityStats, err error) {
+func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Select("min(pace) as Pace, user_id as UserID, distance as Distance").
 		Row().
@@ -61,7 +63,7 @@ func (ur UserActivityRepo) GetFastestCommunityActivity() (stats valueobjects.Act
 	return
 }
 
-func (ur UserActivityRepo) GetLongestCommunityActivity() (stats valueobjects.ActivityStats, err error) {
+func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Select("max(distance) as Distance, user_id as UserID, pace as Pace").
 		Row().
