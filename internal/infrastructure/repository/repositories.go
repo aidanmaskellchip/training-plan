@@ -23,6 +23,7 @@ type UserActivityRepository interface {
 }
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error
+	FindByUserID(id uuid.UUID) (rps []model.RunningProfile, err error)
 	FindByID(id uuid.UUID) (rp model.RunningProfile, err error)
 }
 type PlanRepository interface {

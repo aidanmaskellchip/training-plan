@@ -17,3 +17,7 @@ func (ur RunningProfileRepoMock) Create(_ model.RunningProfile) error {
 func (ur RunningProfileRepoMock) FindByID(_ uuid.UUID) (rp model.RunningProfile, err error) {
 	return rp, nil
 }
+
+func (rpr RunningProfileRepoMock) FindByUserID(userID uuid.UUID) (rps []model.RunningProfile, err error) {
+	return rps, nil
+}

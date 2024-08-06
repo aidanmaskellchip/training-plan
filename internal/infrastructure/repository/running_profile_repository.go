@@ -30,3 +30,17 @@ func (rpr RunningProfileRepo) FindByID(id uuid.UUID) (rp model.RunningProfile, e
 
 	return rp, nil
 }
+
+func (rpr RunningProfileRepo) FindByUserID(userID uuid.UUID) (rps []model.RunningProfile, err error) {
+	result := rpr.db.Where("user_id = ?", userID).Find(&rps)
+
+	if result.RowsAffected == 0 {
+		return rps, fmt.Errorf("running profiles not found")
+	}
+
+	if result.Error != nil {
+		return rps, result.Error
+	}
+
+	return rps, nil
+}

@@ -53,6 +53,29 @@ func (app *App) FindUserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *App) FindUserRunningProfilesHandler(w http.ResponseWriter, r *http.Request) {
+	id := transport.ReadParam(r, "id")
+
+	rps, err := query.FindUserRunningProfilesQuery(&id, app.Repos)
+	if err != nil {
+		app.Logger.Println(err)
+		response.BadRequestResponse(w, r, err)
+		return
+	}
+
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
+		"msg": "success",
+		"data": transport.Envelope{
+			"profiles": rps,
+		},
+	}, nil)
+
+	if err != nil {
+		app.Logger.Println(err)
+		response.ServerErrorResponse(w, r)
+	}
+}
+
 func (app *App) UploadUserActivityHandler(w http.ResponseWriter, r *http.Request) {
 	req := &request.UploadUserActivityRequest{}
 
