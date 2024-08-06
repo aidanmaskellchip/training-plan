@@ -25,3 +25,9 @@ type Plan struct {
 	Week12       []vo.Activity `json:"week_12" gorm:"type:json;"`
 	gorm.Model
 }
+
+func (p *Plan) BeforeCreate(tx *gorm.DB) (err error) {
+	p.ID = uuid.New()
+
+	return
+}

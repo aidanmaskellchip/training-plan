@@ -25,3 +25,9 @@ type RunningProfile struct {
 	GoalDate            time.Time `json:"goal_date" gorm:"type:date;"`
 	gorm.Model
 }
+
+func (rp *RunningProfile) BeforeCreate(tx *gorm.DB) (err error) {
+	rp.ID = uuid.New()
+
+	return
+}

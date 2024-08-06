@@ -15,3 +15,9 @@ type UserActivity struct {
 	Intervals vo.Intervals `json:"intervals" gorm:"json"`
 	gorm.Model
 }
+
+func (ua *UserActivity) BeforeCreate(tx *gorm.DB) (err error) {
+	ua.ID = uuid.New()
+
+	return
+}

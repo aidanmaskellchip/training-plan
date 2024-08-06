@@ -13,3 +13,9 @@ type User struct {
 	Plans           []Plan           `json:"plans" gorm:"foreignKey:UserID"`
 	gorm.Model
 }
+
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	u.ID = uuid.New()
+
+	return
+}

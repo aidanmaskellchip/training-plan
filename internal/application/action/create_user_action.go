@@ -1,6 +1,7 @@
 package action
 
 import (
+	"github.com/google/uuid"
 	"training-plan/internal/domain/model"
 	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"
@@ -12,6 +13,7 @@ func CreateUserAction(data *request.CreateUserRequest, repos *repository.Reposit
 	}
 
 	user := model.User{
+		ID:       uuid.New(),
 		Username: data.Username,
 	}
 
