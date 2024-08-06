@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"training-plan/internal/domain/model"
+	vo "training-plan/internal/domain/value_objects"
 )
 
 type UserActivityRepo struct {
@@ -39,6 +40,8 @@ func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model
 		Row().
 		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
+	stats.Type = vo.STATS_TYPE_FASTEST_USER
+
 	return
 }
 
@@ -50,6 +53,8 @@ func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model
 		Row().
 		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
+	stats.Type = vo.STATS_TYPE_LONGEST_USER
+
 	return
 }
 
@@ -60,6 +65,8 @@ func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model.ActivitySt
 		Row().
 		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
 
+	stats.Type = vo.STATS_TYPE_FASTEST_COMMUNITY
+
 	return
 }
 
@@ -69,6 +76,8 @@ func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model.ActivitySt
 		Order("distance DESC").
 		Row().
 		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
+
+	stats.Type = vo.STATS_TYPE_LONGEST_COMMUNITY
 
 	return
 }
