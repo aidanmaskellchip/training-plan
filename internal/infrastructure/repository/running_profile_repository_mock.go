@@ -21,3 +21,7 @@ func (ur RunningProfileRepoMock) FindByID(_ uuid.UUID) (rp model.RunningProfile,
 func (rpr RunningProfileRepoMock) FindByUserID(userID uuid.UUID) (rps []model.RunningProfile, err error) {
 	return rps, nil
 }
+
+func (rpr RunningProfileRepoMock) FindLatestUserProfile(id uuid.UUID) (rp model.RunningProfile, err error) {
+	return rp, nil
+}

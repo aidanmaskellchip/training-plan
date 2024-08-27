@@ -23,6 +23,7 @@ func (app *App) Routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id/running-profiles", app.FindUserRunningProfilesHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/users/activities/upload", app.UploadUserActivityHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id/stats/overview", app.GetUserStatsHandler)
+	router.HandlerFunc(http.MethodGet, "/v1/users/:id/profile", app.GetUserProfileHandler)
 
 	//running profile
 	router.HandlerFunc(http.MethodGet, "/v1/running-profiles/:id", app.FindRunningProfileHandler)

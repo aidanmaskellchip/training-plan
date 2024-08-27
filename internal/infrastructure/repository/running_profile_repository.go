@@ -44,3 +44,17 @@ func (rpr RunningProfileRepo) FindByUserID(userID uuid.UUID) (rps []model.Runnin
 
 	return rps, nil
 }
+
+func (rpr RunningProfileRepo) FindLatestUserProfile(id uuid.UUID) (rp model.RunningProfile, err error) {
+	result := rpr.db.Order("created_at desc").Where("user_id = ?", id).Find(&rp)
+
+	if result.RowsAffected == 0 {
+		return rp, fmt.Errorf("running profile not found")
+	}
+
+	if result.Error != nil {
+		return rp, result.Error
+	}
+
+	return rp, nil
+}

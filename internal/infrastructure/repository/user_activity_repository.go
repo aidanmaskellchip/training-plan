@@ -34,36 +34,36 @@ func (ur UserActivityRepo) FindByID(id uuid.UUID) (ua model.UserActivity, err er
 
 func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Where("user_id = ?", userID).
 		Order("pace ASC").
 		Row().
-		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
+		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Type = vo.STATS_TYPE_FASTEST_USER
+	stats.Title = vo.STATS_TYPE_FASTEST_USER
 
 	return
 }
 
 func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Where("user_id = ?", userID).
 		Order("distance DESC").
 		Row().
-		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
+		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Type = vo.STATS_TYPE_LONGEST_USER
+	stats.Title = vo.STATS_TYPE_LONGEST_USER
 
 	return
 }
 
 func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Order("pace ASC").
 		Row().
-		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
+		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
 	stats.Type = vo.STATS_TYPE_FASTEST_COMMUNITY
 
@@ -72,12 +72,29 @@ func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model.ActivitySt
 
 func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
-		Select("pace as Pace, user_id as UserID, distance as Distance").
+		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Order("distance DESC").
 		Row().
-		Scan(&stats.Pace, &stats.UserID, &stats.Distance)
+		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
 	stats.Type = vo.STATS_TYPE_LONGEST_COMMUNITY
+
+	return
+}
+
+func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (stats model.ActivityStats, err error) {
+	// TODO: how to write this query
+
+	err = ur.db.Table("user_activities").
+		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
+		Where("user_id = ?", userID).
+		Group("type").
+		Order("type DESC").
+		Limit(1).
+		Row().
+		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
+
+	stats.Title = vo.STATS_TYPE_USER_MOST_COMMON_ACTIVITY
 
 	return
 }

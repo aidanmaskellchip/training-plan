@@ -33,3 +33,7 @@ func (ur UserActivityRepoMock) GetFastestCommunityActivity() (stats model.Activi
 func (ur UserActivityRepoMock) GetLongestCommunityActivity() (stats model.ActivityStats, err error) {
 	return
 }
+
+func (ur UserActivityRepoMock) GetMostCommonActivityType(userID uuid.UUID) (stats model.ActivityStats, err error) {
+	return
+}

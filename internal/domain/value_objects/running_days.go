@@ -21,7 +21,7 @@ func (rd *RunningDays) ToJson() ([]byte, error) {
 	return days, nil
 }
 
-func FromJson(days []byte) (RunningDays, error) {
+func RunningDaysFromJson(days []byte) (RunningDays, error) {
 	rd := RunningDays{}
 	err := json.Unmarshal(days, &rd.Days)
 	if err != nil {

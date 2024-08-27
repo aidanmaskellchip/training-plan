@@ -20,10 +20,12 @@ type UserActivityRepository interface {
 	GetLongestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error)
 	GetFastestCommunityActivity() (stats model.ActivityStats, err error)
 	GetLongestCommunityActivity() (stats model.ActivityStats, err error)
+	GetMostCommonActivityType(userID uuid.UUID) (stats model.ActivityStats, err error)
 }
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error
 	FindByUserID(id uuid.UUID) (rps []model.RunningProfile, err error)
+	FindLatestUserProfile(id uuid.UUID) (rps model.RunningProfile, err error)
 	FindByID(id uuid.UUID) (rp model.RunningProfile, err error)
 }
 type PlanRepository interface {

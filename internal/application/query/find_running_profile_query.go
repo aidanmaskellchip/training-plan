@@ -14,7 +14,7 @@ func FindRunningProfileQuery(id *string, repos *repository.Repositories) (res *r
 		return res, err
 	}
 
-	runningDays, err := vo.FromJson(rp.RunningDays)
+	runningDays, err := vo.RunningDaysFromJson(rp.RunningDays)
 	if err != nil {
 		return res, err
 	}

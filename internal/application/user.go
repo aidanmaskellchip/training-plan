@@ -126,3 +126,33 @@ func (app *App) GetUserStatsHandler(w http.ResponseWriter, r *http.Request) {
 		response.ServerErrorResponse(w, r)
 	}
 }
+
+func (app *App) GetUserProfileHandler(w http.ResponseWriter, r *http.Request) {
+	id := transport.ReadParam(r, "id")
+
+	_, err := query.FindUserQuery(&id, app.Repos)
+	if err != nil {
+		app.Logger.Println(err)
+		response.BadRequestResponse(w, r, err)
+		return
+	}
+
+	profile, err := query.GetUserProfileQuery(&id, app.Repos)
+	if err != nil {
+		app.Logger.Println(err)
+		response.BadRequestResponse(w, r, err)
+		return
+	}
+
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
+		"msg": "success",
+		"data": transport.Envelope{
+			"profile": profile,
+		},
+	}, nil)
+
+	if err != nil {
+		app.Logger.Println(err)
+		response.ServerErrorResponse(w, r)
+	}
+}

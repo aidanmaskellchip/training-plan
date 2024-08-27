@@ -1,12 +1,12 @@
 package response
 
 import (
-	valueobjects "training-plan/internal/domain/model"
+	"training-plan/internal/domain/model"
 )
 
 type GetUserStatsResponse struct {
-	UserFastestRun      valueobjects.ActivityStats `json:"user_fastest_run"`
-	CommunityFastestRun valueobjects.ActivityStats `json:"community_fastest_run"`
-	UserLongestRun      valueobjects.ActivityStats `json:"user_longest_run"`
-	CommunityLongestRun valueobjects.ActivityStats `json:"community_longest_run"`
+	UserFastestRun      model.ActivityStats `json:"user_fastest_run"`
+	CommunityFastestRun model.ActivityStats `json:"community_fastest_run"`
+	UserLongestRun      model.ActivityStats `json:"user_longest_run"`
+	CommunityLongestRun model.ActivityStats `json:"community_longest_run"`
 }

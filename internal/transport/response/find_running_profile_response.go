@@ -2,6 +2,8 @@ package response
 
 import (
 	"time"
+	"training-plan/internal/domain/model"
+	valueobjects "training-plan/internal/domain/value_objects"
 )
 
 type FindRunningProfileResponse struct {
@@ -21,4 +23,30 @@ type FindRunningProfileResponse struct {
 	PlanLength          int       `json:"plan_length"`
 	StartDate           time.Time `json:"start_date"`
 	GoalDate            time.Time `json:"goal_date"`
+}
+
+func NewFindRunningProfileResponse(p model.RunningProfile) (FindRunningProfileResponse, error) {
+	rd, err := valueobjects.RunningDaysFromJson(p.RunningDays)
+	if err != nil {
+		return FindRunningProfileResponse{}, err
+	}
+
+	return FindRunningProfileResponse{
+		ID:                  p.ID.String(),
+		UserID:              p.UserID.String(),
+		GoalDistance:        p.GoalDistance,
+		GoalTime:            p.GoalTime,
+		Terrain:             p.Terrain,
+		Current5K:           p.Current5K,
+		Current10K:          p.Current10K,
+		CurrentHalfMarathon: p.CurrentHalfMarathon,
+		CurrentFullMarathon: p.CurrentFullMarathon,
+		RunningDays:         rd.Days,
+		RunningDaysPerWeek:  p.RunningDaysPerWeek,
+		LongRunDay:          p.LongRunDay,
+		CurrentAbility:      p.CurrentAbility,
+		PlanLength:          p.PlanLength,
+		StartDate:           p.StartDate,
+		GoalDate:            p.GoalDate,
+	}, nil
 }
