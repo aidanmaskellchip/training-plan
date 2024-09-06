@@ -21,7 +21,6 @@ func (app *App) Routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodPost, "/v1/users/create", app.CreateUserHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id", app.FindUserHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id/running-profiles", app.FindUserRunningProfilesHandler)
-	router.HandlerFunc(http.MethodPost, "/v1/users/activities/upload", app.UploadUserActivityHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id/stats/overview", app.GetUserStatsHandler)
 	router.HandlerFunc(http.MethodGet, "/v1/users/:id/profile", app.GetUserProfileHandler)
 
@@ -29,8 +28,26 @@ func (app *App) Routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodGet, "/v1/running-profiles/:id", app.FindRunningProfileHandler)
 	router.HandlerFunc(http.MethodPost, "/v1/running-profiles/create", app.CreateRunningProfileHandler)
 
+	// user activity
+	router.HandlerFunc(http.MethodPost, "/v1/users-activities/upload", app.UploadUserActivityHandler)
+	// edit a user's uploaded activity
+
+	//base plans
+	// list all available base plans based on a users rp
+	//router.HandlerFunc(http.MethodGet, "/v1/base-plans", app.GetBasePlansHandler)
+	// create a plan from a base plan
+
 	//plan
 	router.HandlerFunc(http.MethodPost, "/v1/plans/create", app.CreatePlanHandler)
+	// edit a user activity in a week of the plan
+
+	//FLOW
+	// create user
+	// create rp
+	// list base plans
+	// create plan from base plan
+	// show today's activity
+	// upload activity
 
 	return router
 }

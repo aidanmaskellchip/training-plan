@@ -16,7 +16,7 @@ type UploadUserActivityRequest struct {
 
 func (u *UploadUserActivityRequest) Validate() error {
 	err := errors.New("invalid activity type: " + u.Type)
-	for _, v := range valueobjects.GetTypeStrings() {
+	for _, v := range valueobjects.GetActivityTypeStrings() {
 		if v == u.Type {
 			err = nil
 		}

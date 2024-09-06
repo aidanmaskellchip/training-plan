@@ -7,22 +7,22 @@ import (
 )
 
 type Plan struct {
-	ID           uuid.UUID     `json:"id" gorm:"type:uuid;primaryKey;"`
-	UserID       uuid.UUID     `json:"user_id" gorm:"type:uuid;not null;"`
-	Length       int           `json:"length" gorm:"type:int;not null;"`
-	GoalDistance int           `json:"goal_distance" gorm:"type:int;not null;"`
-	Week1        []vo.Activity `json:"week_1" gorm:"type:json;"`
-	Week2        []vo.Activity `json:"week_2" gorm:"type:json;"`
-	Week3        []vo.Activity `json:"week_3" gorm:"type:json;"`
-	Week4        []vo.Activity `json:"week_4" gorm:"type:json;"`
-	Week5        []vo.Activity `json:"week_5" gorm:"type:json;"`
-	Week6        []vo.Activity `json:"week_6" gorm:"type:json;"`
-	Week7        []vo.Activity `json:"week_7" gorm:"type:json;"`
-	Week8        []vo.Activity `json:"week_8" gorm:"type:json;"`
-	Week9        []vo.Activity `json:"week_9" gorm:"type:json;"`
-	Week10       []vo.Activity `json:"week_10" gorm:"type:json;"`
-	Week11       []vo.Activity `json:"week_11" gorm:"type:json;"`
-	Week12       []vo.Activity `json:"week_12" gorm:"type:json;"`
+	ID           uuid.UUID       `json:"id" gorm:"type:uuid;primaryKey;"`
+	UserID       uuid.UUID       `json:"user_id" gorm:"type:uuid;not null;"`
+	Length       int             `json:"length" gorm:"type:int;not null;"`
+	GoalDistance vo.GoalDistance `json:"goal_distance" gorm:"type:string;not null;"`
+	Week1        ActivityWeek    `json:"week_1" gorm:"type:json;"`
+	Week2        ActivityWeek    `json:"week_2" gorm:"type:json;"`
+	Week3        ActivityWeek    `json:"week_3" gorm:"type:json;"`
+	Week4        ActivityWeek    `json:"week_4" gorm:"type:json;"`
+	Week5        ActivityWeek    `json:"week_5" gorm:"type:json;"`
+	Week6        ActivityWeek    `json:"week_6" gorm:"type:json;"`
+	Week7        ActivityWeek    `json:"week_7" gorm:"type:json;"`
+	Week8        ActivityWeek    `json:"week_8" gorm:"type:json;"`
+	Week9        ActivityWeek    `json:"week_9" gorm:"type:json;"`
+	Week10       ActivityWeek    `json:"week_10" gorm:"type:json;"`
+	Week11       ActivityWeek    `json:"week_11" gorm:"type:json;"`
+	Week12       ActivityWeek    `json:"week_12" gorm:"type:json;"`
 	gorm.Model
 }
 

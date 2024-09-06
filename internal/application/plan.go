@@ -1,7 +1,6 @@
 package application
 
 import (
-	"fmt"
 	"net/http"
 	"training-plan/internal/application/action"
 	"training-plan/internal/transport"
@@ -18,12 +17,10 @@ func (app *App) CreatePlanHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	u, err := action.CreatePlanAction(&input, app.Repos)
+	err = action.CreatePlanAction(&input, app.Repos)
 	if err != nil {
 		response.BadRequestResponse(w, r, err)
 	}
-
-	fmt.Println(u)
 
 	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
 	if err != nil {

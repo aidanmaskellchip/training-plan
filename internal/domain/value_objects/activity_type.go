@@ -5,19 +5,23 @@ type ActivityType struct {
 }
 
 var (
-	EASY_RUN      = ActivityType{Type: "easy_run"}
-	LONG_RUN      = ActivityType{Type: "long_run"}
-	INTERVALS_RUN = ActivityType{Type: "intervals_run"}
-	RACE_PACE_RUN = ActivityType{Type: "race_pace_run"}
-	GOAL_RUN      = ActivityType{Type: "goal_run"}
+	EasyRun      = ActivityType{Type: "easy_run"}
+	LongRun      = ActivityType{Type: "long_run"}
+	IntervalsRun = ActivityType{Type: "intervals_run"}
+	RacePaceRun  = ActivityType{Type: "race_pace_run"}
+	GoalRun      = ActivityType{Type: "goal_run"}
 )
 
-func GetTypeStrings() []string {
+func GetActivityTypeStrings() []string {
 	return []string{
-		EASY_RUN.Type,
-		LONG_RUN.Type,
-		INTERVALS_RUN.Type,
-		RACE_PACE_RUN.Type,
-		GOAL_RUN.Type,
+		EasyRun.Type,
+		LongRun.Type,
+		IntervalsRun.Type,
+		RacePaceRun.Type,
+		GoalRun.Type,
 	}
+}
+
+func (at ActivityType) String() string {
+	return at.Type
 }

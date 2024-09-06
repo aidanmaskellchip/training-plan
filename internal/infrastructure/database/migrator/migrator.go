@@ -31,5 +31,9 @@ func Migrate(con *gorm.DB) (err error) {
 		return fmt.Errorf("failed to migrate user activities: %w", err)
 	}
 
+	if err := create(&model.Plan{}); err != nil {
+		return fmt.Errorf("failed to migrate plans: %w", err)
+	}
+
 	return
 }
