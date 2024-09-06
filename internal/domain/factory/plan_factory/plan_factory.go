@@ -13,6 +13,9 @@ func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 		weeks = append(weeks, weekfactory.NewWeek())
 	}
 
+	//TODO: incorporate new running days function then pass structure into these set runs methods
+	//rd, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
+
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	errChn := make(chan error)
@@ -30,6 +33,9 @@ func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 		rd, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
 		if err != nil {
 			errChn <- err
+			wg.Done()
+
+			return
 		}
 
 		err = setEasyRuns(&weeks, rd, rp.LongRunDay, rp.PlanLength)
@@ -62,6 +68,9 @@ func setLongRuns(weeks *[]model.ActivityWeek, longRunDay int, planLength int) er
 	return nil
 }
 
+/**
+ * Easy run day is the first available day that is not long run day
+ */
 func setEasyRuns(
 	weeks *[]model.ActivityWeek,
 	rd valueobjects.RunningDays,
@@ -84,3 +93,5 @@ func setEasyRuns(
 
 	return nil
 }
+
+func setThresholdRuns(weeks *[]model.ActivityWeek)
