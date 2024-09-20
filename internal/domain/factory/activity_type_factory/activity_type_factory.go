@@ -7,7 +7,7 @@ import (
 
 func NewActivityType(at string) (vo.ActivityType, error) {
 	err := errors.New("invalid activity type")
-	for _, a := range vo.GetTypeStrings() {
+	for _, a := range vo.GetActivityTypeStrings() {
 		if a == at {
 			err = nil
 		}

@@ -65,7 +65,7 @@ func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model.ActivitySt
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Type = vo.STATS_TYPE_FASTEST_COMMUNITY
+	stats.Title = vo.STATS_TYPE_FASTEST_COMMUNITY
 
 	return
 }
@@ -77,7 +77,7 @@ func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model.ActivitySt
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Type = vo.STATS_TYPE_LONGEST_COMMUNITY
+	stats.Title = vo.STATS_TYPE_LONGEST_COMMUNITY
 
 	return
 }

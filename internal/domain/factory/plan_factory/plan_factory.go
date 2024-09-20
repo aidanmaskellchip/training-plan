@@ -94,4 +94,6 @@ func setEasyRuns(
 	return nil
 }
 
-func setThresholdRuns(weeks *[]model.ActivityWeek)
+func setThresholdRuns(weeks *[]model.ActivityWeek) {
+
+}

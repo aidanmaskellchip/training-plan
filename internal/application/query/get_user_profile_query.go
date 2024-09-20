@@ -97,11 +97,6 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 		res.MostCommonActivityType = favAct.Type
 	}
 
-	// username
-	// joined date
-	// longest run
-	// fav type
-
 	return res, nil
 
 }

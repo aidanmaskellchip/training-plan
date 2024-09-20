@@ -12,7 +12,7 @@ import (
 func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.ActivityStats, err error) {
 	userID := vo.NewUserID(*id)
 
-	statsChan := make(chan model.ActivityStats)
+	statsChan := make(chan model.ActivityStats, 4)
 	var wg sync.WaitGroup
 	wg.Add(4)
 
@@ -61,6 +61,7 @@ func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.
 		}
 
 		statsChan <- act
+
 		wg.Done()
 	}()
 
