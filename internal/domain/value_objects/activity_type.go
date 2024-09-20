@@ -25,3 +25,20 @@ func GetActivityTypeStrings() []string {
 func (at ActivityType) String() string {
 	return at.Type
 }
+
+func FromType(t string) ActivityType {
+	switch t {
+	case "easy_run":
+		return EasyRun
+	case "long_run":
+		return LongRun
+	case "intervals_run":
+		return IntervalsRun
+	case "race_pace_run":
+		return RacePaceRun
+	case "goal_run":
+		return GoalRun
+	default:
+		return EasyRun
+	}
+}

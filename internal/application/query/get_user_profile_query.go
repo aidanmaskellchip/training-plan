@@ -1,7 +1,6 @@
 package query
 
 import (
-	"errors"
 	"log"
 	"sync"
 	"training-plan/internal/domain/model"
@@ -21,8 +20,9 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 	var wg sync.WaitGroup
 	wg.Add(3)
 
-	actChan := make(chan model.ActivityStats)
-	runProfChan := make(chan model.RunningProfile)
+	actChan := make(chan model.ActivityStats, 1)
+	runProfChan := make(chan model.RunningProfile, 1)
+	favRunChan := make(chan vo.ActivityType, 1)
 
 	go func() {
 		defer wg.Done()
@@ -30,8 +30,6 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 		longRun, err := repos.UserActivityRepository.GetLongestUserActivity(userID.ID)
 		if err != nil {
 			log.Println(err)
-			// do i need this ? or will the defer one cover it
-			wg.Done()
 			return
 		}
 
@@ -44,11 +42,10 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 		favRun, err := repos.UserActivityRepository.GetMostCommonActivityType(userID.ID)
 		if err != nil {
 			log.Println(err)
-			wg.Done()
 			return
 		}
 
-		actChan <- favRun
+		favRunChan <- favRun
 	}()
 
 	go func() {
@@ -57,7 +54,6 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 		runProf, err := repos.RunningProfileRepository.FindLatestUserProfile(userID.ID)
 		if err != nil {
 			log.Println(err)
-			wg.Done()
 			return
 		}
 
@@ -65,10 +61,6 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 	}()
 
 	wg.Wait()
-
-	if len(actChan) != 2 {
-		return res, errors.New("could not retrieve profile stats")
-	}
 
 	res.Username = user.Username
 	res.JoinedDate = user.CreatedAt.String()
@@ -81,21 +73,8 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 	}
 	res.LatestRunningProfile = rp
 
-	if len(actChan) != 2 {
-		log.Println(err)
-
-		return res, errors.New("could not retrieve user activity stats")
-	}
-
-	act := <-actChan
-	if act.Title == vo.STATS_TYPE_USER_MOST_COMMON_ACTIVITY {
-		res.MostCommonActivityType = act.Type
-		res.LongestRun = <-actChan
-	} else {
-		res.LongestRun = act
-		favAct := <-actChan
-		res.MostCommonActivityType = favAct.Type
-	}
+	res.LongestRun = <-actChan
+	res.MostCommonActivityType = <-favRunChan
 
 	return res, nil
 

@@ -82,19 +82,22 @@ func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model.ActivitySt
 	return
 }
 
-func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (stats model.ActivityStats, err error) {
-	// TODO: how to write this query
+func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error) {
+	var mostCommon string
 
 	err = ur.db.Table("user_activities").
-		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
+		Select("type").
 		Where("user_id = ?", userID).
 		Group("type").
-		Order("type DESC").
+		Order("COUNT(type) DESC").
 		Limit(1).
-		Row().
-		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
+		Pluck("type", &mostCommon).Error
 
-	stats.Title = vo.STATS_TYPE_USER_MOST_COMMON_ACTIVITY
+	if err == nil {
+		t = vo.FromType(mostCommon)
+	}
+
+	fmt.Println(t.Type)
 
 	return
 }

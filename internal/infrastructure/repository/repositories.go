@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"training-plan/internal/domain/model"
+	vo "training-plan/internal/domain/value_objects"
 )
 
 var ErrNoRecord = errors.New("no matching record found")
@@ -20,7 +21,7 @@ type UserActivityRepository interface {
 	GetLongestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error)
 	GetFastestCommunityActivity() (stats model.ActivityStats, err error)
 	GetLongestCommunityActivity() (stats model.ActivityStats, err error)
-	GetMostCommonActivityType(userID uuid.UUID) (stats model.ActivityStats, err error)
+	GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error)
 }
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error
