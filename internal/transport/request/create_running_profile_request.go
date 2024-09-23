@@ -1,7 +1,9 @@
 package request
 
 import (
+	"errors"
 	"github.com/google/uuid"
+	valueobjects "training-plan/internal/domain/value_objects"
 )
 
 type CreateRunningProfileRequest struct {
@@ -23,6 +25,35 @@ type CreateRunningProfileRequest struct {
 }
 
 func (c *CreateRunningProfileRequest) Validate() error {
-	//todo: add validation
-	return nil
+	var n int
+	for _, v := range c.RunningDays {
+		if v == 1 {
+			n++
+		}
+	}
+
+	if n < c.RunningDaysPerWeek {
+		return errors.New("not enough running days selected to allocate all runs")
+	}
+
+	if c.RunningDaysPerWeek < 2 || c.RunningDaysPerWeek > 5 {
+		return errors.New("invalid number of running days selected")
+	}
+
+	if c.RunningDays[c.LongRunDay] != 1 {
+		return errors.New("long run day not able to be allocated from running days")
+	}
+
+	if c.PlanLength != 12 {
+		return errors.New("plan length not valid")
+	}
+
+	err := errors.New("invalid terrain type")
+	for _, v := range valueobjects.GetTerrainStrings() {
+		if v == c.Terrain {
+			err = nil
+		}
+	}
+
+	return err
 }

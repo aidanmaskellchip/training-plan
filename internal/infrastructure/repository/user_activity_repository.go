@@ -94,7 +94,7 @@ func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (t vo.Act
 		Pluck("type", &mostCommon).Error
 
 	if err == nil {
-		t = vo.FromType(mostCommon)
+		t = vo.FromActivityType(mostCommon)
 	}
 
 	fmt.Println(t.Type)

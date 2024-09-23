@@ -26,7 +26,7 @@ func (at ActivityType) String() string {
 	return at.Type
 }
 
-func FromType(t string) ActivityType {
+func FromActivityType(t string) ActivityType {
 	switch t {
 	case "easy_run":
 		return EasyRun
