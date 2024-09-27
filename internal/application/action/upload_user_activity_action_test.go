@@ -60,10 +60,24 @@ func TestUploadUserActivityAction(t *testing.T) {
 			},
 			err: errors.New("pace is invalid"),
 		},
+		{
+			name: "User not found",
+			request: request.UploadUserActivityRequest{
+				Type:     valueobjects.EasyRun.Type,
+				Distance: 5.00,
+				Pace:     1.00,
+			},
+			err: errors.New("user not found"),
+		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			if tt.request.UserID == uuid.Nil {
+				id, _ := uuid.Parse(repository.MagicFailingId)
+				tt.request.UserID = id
+			}
+
 			err := UploadUserActivityAction(&tt.request, repos)
 			assert.Equal(t, tt.err, err)
 		})
