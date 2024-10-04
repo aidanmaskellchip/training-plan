@@ -8,42 +8,40 @@ import (
 )
 
 func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
+	p.UserID = rp.UserID
+	p.Length = rp.PlanLength
+	p.GoalDistance = valueobjects.GoalDistance{Type: rp.GoalDistance}
+
 	var weeks []model.ActivityWeek
 	for i := 0; i < rp.PlanLength; i++ {
 		weeks = append(weeks, weekfactory.NewWeek())
 	}
 
-	//TODO: incorporate new running days function then pass structure into these set runs methods
-	//rd, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
+	rd, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
+	if err != nil {
+		return model.Plan{}, err
+	}
 
 	wg := sync.WaitGroup{}
-	wg.Add(1)
-	errChn := make(chan error)
+	wg.Add(2)
+	errChn := make(chan error, 2)
 
 	go func() {
+		defer wg.Done()
+
 		err = setLongRuns(&weeks, rp.LongRunDay, rp.PlanLength)
 		if err != nil {
 			errChn <- err
 		}
-
-		wg.Done()
 	}()
 
 	go func() {
-		rd, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
-		if err != nil {
-			errChn <- err
-			wg.Done()
-
-			return
-		}
+		defer wg.Done()
 
 		err = setEasyRuns(&weeks, rd, rp.LongRunDay, rp.PlanLength)
 		if err != nil {
 			errChn <- err
 		}
-
-		wg.Done()
 	}()
 
 	wg.Wait()
@@ -52,11 +50,15 @@ func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 	// easy run distances
 	// threshold
 
-	return model.Plan{}, nil
+	return p, nil
 }
 
 func setLongRuns(weeks *[]model.ActivityWeek, longRunDay int, planLength int) error {
 	for i, w := range *weeks {
+		if i == len(*weeks)-1 {
+			return nil
+		}
+
 		lrd, err := w.GetDayByIndex(longRunDay)
 		if err != nil {
 			return err
@@ -78,6 +80,10 @@ func setEasyRuns(
 	planLength int,
 ) error {
 	for i, w := range *weeks {
+		if i == len(*weeks)-1 {
+			return nil
+		}
+
 		easyIndex, err := w.GetEasyRunDay(rd, longRunDay)
 		if err != nil {
 			return err

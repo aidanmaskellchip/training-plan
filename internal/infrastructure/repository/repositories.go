@@ -31,6 +31,8 @@ type RunningProfileRepository interface {
 }
 type PlanRepository interface {
 	Create(plan model.Plan) error
+	FindByID(id uuid.UUID) (p model.Plan, err error)
+	FindLatestUserPlan(id uuid.UUID) (p model.Plan, err error)
 }
 
 type Repositories struct {

@@ -17,12 +17,13 @@ func (app *App) CreatePlanHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = action.CreatePlanAction(&input, app.Repos)
+	plan, err := action.CreatePlanAction(&input, app.Repos)
 	if err != nil {
 		response.BadRequestResponse(w, r, err)
+		return
 	}
 
-	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success", "plan": plan}, nil)
 	if err != nil {
 		app.Logger.Println(err)
 		response.ServerErrorResponse(w, r)
