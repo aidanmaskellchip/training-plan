@@ -32,22 +32,9 @@ func (app *App) Routes() *httprouter.Router {
 	router.HandlerFunc(http.MethodPost, "/v1/users-activities/upload", app.UploadUserActivityHandler)
 	// edit a user's uploaded activity
 
-	//base plans
-	// list all available base plans based on a users rp
-	//router.HandlerFunc(http.MethodGet, "/v1/base-plans", app.GetBasePlansHandler)
-	// create a plan from a base plan
-
 	//plan
-	router.HandlerFunc(http.MethodPost, "/v1/plans/create", app.CreatePlanHandler)
-	// edit a user activity in a week of the plan
-
-	//FLOW
-	// create user
-	// create rp
-	// list base plans
-	// create plan from base plan
-	// show today's activity
-	// upload activity
+	// TODO: IN PROGRESS...
+	//router.HandlerFunc(http.MethodPost, "/v1/plans/create", app.CreatePlanHandler)
 
 	return router
 }

@@ -34,7 +34,6 @@ func CreatePlanAction(data *request.CreatePlanRequest, repos *repository.Reposit
 		return plan, err
 	}
 
-	// TODO: how to cast model struct prop types when retrieving from DB
 	res, err := repos.PlanRepository.FindLatestUserPlan(userID.ID)
 	if err != nil {
 		return plan, err

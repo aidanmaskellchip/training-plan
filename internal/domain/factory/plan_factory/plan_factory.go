@@ -10,7 +10,7 @@ import (
 func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 	p.UserID = rp.UserID
 	p.Length = rp.PlanLength
-	p.GoalDistance = valueobjects.GoalDistance{Type: rp.GoalDistance}
+	p.GoalDistance = rp.GoalDistance
 
 	var weeks []model.ActivityWeek
 	for i := 0; i < rp.PlanLength; i++ {
