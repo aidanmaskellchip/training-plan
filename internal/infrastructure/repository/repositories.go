@@ -22,6 +22,7 @@ type UserActivityRepository interface {
 	GetFastestCommunityActivity() (stats model.ActivityStats, err error)
 	GetLongestCommunityActivity() (stats model.ActivityStats, err error)
 	GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error)
+	Update(act model.UserActivity) error
 }
 type RunningProfileRepository interface {
 	Create(profile model.RunningProfile) error

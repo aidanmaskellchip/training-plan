@@ -12,6 +12,20 @@ type UserActivityRepo struct {
 	db *gorm.DB
 }
 
+func (ur UserActivityRepo) Update(act model.UserActivity) error {
+	result := ur.db.Where("user_id = ?", act.UserID).Save(act)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("activity not found")
+	}
+
+	return nil
+}
+
 func (ur UserActivityRepo) Create(ua model.UserActivity) error {
 	result := ur.db.Create(&ua)
 

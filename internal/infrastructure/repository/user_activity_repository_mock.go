@@ -38,3 +38,7 @@ func (ur UserActivityRepoMock) GetLongestCommunityActivity() (stats model.Activi
 func (ur UserActivityRepoMock) GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error) {
 	return
 }
+
+func (ur UserActivityRepoMock) Update(act model.UserActivity) error {
+	return nil
+}

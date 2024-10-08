@@ -30,11 +30,16 @@ func (app *App) Routes() *httprouter.Router {
 
 	// user activity
 	router.HandlerFunc(http.MethodPost, "/v1/users-activities/upload", app.UploadUserActivityHandler)
+	router.HandlerFunc(http.MethodPatch, "/v1/users-activities/:id/edit", app.EditUserActivityHandler)
 	// edit a user's uploaded activity
 
 	//plan
 	// TODO: IN PROGRESS...
 	//router.HandlerFunc(http.MethodPost, "/v1/plans/create", app.CreatePlanHandler)
+
+	// TODO:
+	// Accolades ? e.g. 5 uploaded activities
+	// Event driven
 
 	return router
 }
