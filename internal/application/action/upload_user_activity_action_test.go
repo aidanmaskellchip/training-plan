@@ -74,7 +74,7 @@ func TestUploadUserActivityAction(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if tt.request.UserID == uuid.Nil {
-				id, _ := uuid.Parse(repository.MagicFailingId)
+				id, _ := uuid.Parse(repository.MagicFailingUserId)
 				tt.request.UserID = id
 			}
 
