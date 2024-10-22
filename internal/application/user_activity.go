@@ -17,7 +17,7 @@ func (app *App) UploadUserActivityHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err = action.UploadUserActivityAction(req, app.Repos); err != nil {
+	if err = action.UploadUserActivityAction(req, app.Repos, app.EventBus, app.EventChannels); err != nil {
 		response.BadRequestResponse(w, r, err)
 		return
 	}
