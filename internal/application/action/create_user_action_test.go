@@ -37,7 +37,7 @@ func TestCreateUserAction(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := CreateUserAction(&tt.request, repos)
+			_, err := CreateUserAction(&tt.request, repos)
 			assert.Equal(t, tt.err, err)
 		})
 	}
