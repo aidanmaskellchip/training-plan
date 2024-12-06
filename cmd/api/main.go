@@ -1,8 +1,12 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
 	"time"
 	"training-plan/internal/application"
 )
@@ -19,7 +23,31 @@ func init() {
 }
 
 func main() {
-	app.Logger.Println("Starting")
+	go func() {
+		err := app.EventRouter.Run(context.Background())
+		if err != nil {
+			panic(fmt.Sprintf("Unable to run the event router: %v", err))
+		}
+	}()
+
+	ctx, cancel := context.WithCancel(context.Background())
+
+	go func() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt, os.Kill)
+		<-c
+		cancel()
+	}()
+
+	runHTTP(ctx)
+
+	err := app.EventRouter.Close()
+
+	app.Logger.Fatal(err)
+}
+
+func runHTTP(ctx context.Context) {
+	app.Logger.Printf("starting %s server", "4001")
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", app.Config.Port),
@@ -29,8 +57,12 @@ func main() {
 		WriteTimeout: 30 * time.Second,
 	}
 
-	app.Logger.Printf("starting %s server on %s", app.Config.Env, srv.Addr)
-	err := srv.ListenAndServe()
+	go func() {
+		<-ctx.Done()
+		_ = srv.Close()
+	}()
 
-	app.Logger.Fatal(err)
+	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		panic(err)
+	}
 }

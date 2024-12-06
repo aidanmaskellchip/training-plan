@@ -20,6 +20,7 @@ setup:
 	make docker-volume-create
 	make docker-network-create
 	make docker-build-go-image
+#	make docker-up
 	make go-mod-tidy
 	make go-vendor-download
 	make -i stop-db
@@ -35,6 +36,9 @@ docker-network-create:
 
 docker-volume-create:
 	docker volume create --driver local --opt type=nfs --opt o=addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3 --opt device=:${PWD} --name=${DOCKER_VOLUME_APP_REF}
+
+docker-up:
+	DOCKER_NETWORK_DB_REF=${DOCKER_NETWORK_DB_REF} docker-compose -f docker-compose.yml up --build --force-recreate ${UP_ARGS}
 
 setup-db:
 	docker run -d --name training-plan_db -p 8432:5432 --network ${DOCKER_NETWORK_DB_REF} -e POSTGRES_PASSWORD=training-plan_password -e POSTGRES_USER=training-plan_user -e POSTGRES_DB=training-plan_db -e PGDATA="/var/lib/postgresql/data/pgdata" postgres:latest

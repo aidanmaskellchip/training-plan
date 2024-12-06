@@ -2,22 +2,26 @@ package application
 
 import (
 	"fmt"
+	"github.com/ThreeDotsLabs/watermill"
+	"github.com/ThreeDotsLabs/watermill-aws/sqs"
+	"github.com/ThreeDotsLabs/watermill/message"
 	"gorm.io/gorm"
 	"log"
 	"os"
 	"training-plan/internal/infrastructure/config"
 	"training-plan/internal/infrastructure/database/db"
-	"training-plan/internal/infrastructure/event"
+	"training-plan/internal/infrastructure/event/pubsub"
 	"training-plan/internal/infrastructure/repository"
 )
 
 type App struct {
-	Config        *config.Config
-	Logger        *log.Logger
-	DB            *gorm.DB
-	Repos         *repository.Repositories
-	EventBus      *event.EventBus
-	EventChannels *event.Channels
+	Config      *config.Config
+	Logger      *log.Logger
+	DB          *gorm.DB
+	Repos       *repository.Repositories
+	SqsSub      *sqs.Subscriber
+	SqsPub      *sqs.Publisher
+	EventRouter *message.Router
 }
 
 func Load(
@@ -25,15 +29,17 @@ func Load(
 	logger *log.Logger,
 	db *gorm.DB,
 	repos *repository.Repositories,
-	eb *event.EventBus,
-	ec *event.Channels,
+	sub *sqs.Subscriber,
+	pub *sqs.Publisher,
+	eventRouter *message.Router,
 ) (app App) {
 	app.Config = conf
 	app.Logger = logger
 	app.DB = db
 	app.Repos = repos
-	app.EventBus = eb
-	app.EventChannels = ec
+	app.SqsSub = sub
+	app.SqsPub = pub
+	app.EventRouter = eventRouter
 
 	return
 }
@@ -51,15 +57,28 @@ func Setup() (app App, err error) {
 		return app, fmt.Errorf("unable to connect to db: %s", err.Error())
 	}
 
-	eBus := event.NewEventBus()
-	eBus.LoadSubscriptions()
+	wtmLogger := watermill.NewStdLogger(false, false)
+
+	sub, err := pubsub.NewSQSSubscriber(&wtmLogger)
+	if err != nil {
+		panic(err)
+	}
+	pub, err := pubsub.NewSQSPublisher(&wtmLogger)
+	if err != nil {
+		panic(err)
+	}
+	eventRouter, err := pubsub.NewSQSEventRouter(&wtmLogger, sub)
+	if err != nil {
+		panic(err)
+	}
 
 	return Load(
 		conf,
 		logger,
 		database,
 		repository.NewRepos(database),
-		eBus,
-		event.NewChannels(),
+		sub,
+		pub,
+		eventRouter,
 	), nil
 }

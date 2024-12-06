@@ -1,7 +1,7 @@
 package action
 
 import (
-	uuid "github.com/google/uuid"
+	"github.com/google/uuid"
 	activitytypefactory "training-plan/internal/domain/factory/activity_type_factory"
 	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"
@@ -27,7 +27,7 @@ func EditUserActivityAction(actId string, data *request.EditUserActivityRequest,
 		if err != nil {
 			return err
 		}
-		
+
 		userAct.Type = at.Type
 	}
 
