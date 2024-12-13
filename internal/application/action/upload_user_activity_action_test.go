@@ -6,7 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 	valueobjects "training-plan/internal/domain/value_objects"
-	"training-plan/internal/infrastructure/event"
 	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"
 )
@@ -79,7 +78,7 @@ func TestUploadUserActivityAction(t *testing.T) {
 				tt.request.UserID = id
 			}
 
-			err := UploadUserActivityAction(&tt.request, repos, event.NewEventBus(), event.NewChannels())
+			err := UploadUserActivityAction(&tt.request, repos)
 			assert.Equal(t, tt.err, err)
 		})
 	}

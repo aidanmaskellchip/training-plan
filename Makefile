@@ -20,7 +20,7 @@ setup:
 	make docker-volume-create
 	make docker-network-create
 	make docker-build-go-image
-#	make docker-up
+	make docker-up
 	make go-mod-tidy
 	make go-vendor-download
 	make -i stop-db
