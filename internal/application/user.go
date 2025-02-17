@@ -18,13 +18,13 @@ func (app *App) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userId, err := action.CreateUserAction(&input, app.Repos)
+	err = action.CreateUserAction(&input, app.Repos)
 	if err != nil {
 		response.BadRequestResponse(w, r, err)
 		return
 	}
 
-	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success", "id": userId}, nil)
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
 	if err != nil {
 		app.Logger.Println(err)
 		response.ServerErrorResponse(w, r)
