@@ -23,8 +23,6 @@ setup:
 	make docker-up
 	make go-mod-tidy
 	make go-vendor-download
-	make -i stop-db
-	make setup-db
 	make run-migrations
 	make start-server
 
@@ -39,13 +37,6 @@ docker-volume-create:
 
 docker-up:
 	DOCKER_NETWORK_DB_REF=${DOCKER_NETWORK_DB_REF} docker-compose -f docker-compose.yml up --build --force-recreate ${UP_ARGS}
-
-setup-db:
-	docker run -d --name training-plan_db -p 8432:5432 --network ${DOCKER_NETWORK_DB_REF} -e POSTGRES_PASSWORD=training-plan_password -e POSTGRES_USER=training-plan_user -e POSTGRES_DB=training-plan_db -e PGDATA="/var/lib/postgresql/data/pgdata" postgres:latest
-
-stop-db:
-	docker stop training-plan_db
-	docker container remove training-plan_db
 
 start-server:
 	go run ./cmd/api
