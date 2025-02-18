@@ -11,7 +11,7 @@ on your current abilities and goals.
 
 ### Local Database
 - Upon running `make setup`, the local postgres database is accessible through the port 8432.
-- The credentials for accessing the db can be found in the `make setup-db` command in the `Makefile`
+- The credentials for accessing the db can be found in the `docker-compose.yml`
 
 ### Database Utils
 Migrations can be invoked by running `make run-migrations`

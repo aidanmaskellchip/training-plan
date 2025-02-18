@@ -1,5 +1,6 @@
 services:
   localstack:
+    container_name: tp_localstack
     image: localstack/localstack:latest
     environment:
       - SERVICES=sqs,sns
@@ -15,6 +16,7 @@ services:
       start_period: 30s
 
   tp_db:
+    container_name: tp_db
     image: postgres:latest
     ports:
       - "8432:5432"
