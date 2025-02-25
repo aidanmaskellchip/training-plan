@@ -11,10 +11,10 @@ type UserRepo struct {
 	db *gorm.DB
 }
 
-func (ur UserRepo) Create(user model.User) error {
+func (ur UserRepo) Create(user model.User) (*model.User, error) {
 	result := ur.db.Create(&user)
 
-	return result.Error
+	return &user, result.Error
 }
 
 func (ur UserRepo) FindByID(id uuid.UUID) (user model.User, err error) {

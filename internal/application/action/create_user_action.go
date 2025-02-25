@@ -6,18 +6,19 @@ import (
 	"training-plan/internal/transport/request"
 )
 
-func CreateUserAction(data *request.CreateUserRequest, repos *repository.Repositories) (err error) {
+func CreateUserAction(data *request.CreateUserRequest, repos *repository.Repositories) (*model.User, error) {
 	if err := data.Validate(); err != nil {
-		return err
+		return nil, err
 	}
 
 	user := model.User{
 		Username: data.Username,
 	}
 
-	if err := repos.UserRepository.Create(user); err != nil {
-		return err
+	res, err := repos.UserRepository.Create(user)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil
+	return res, nil
 }

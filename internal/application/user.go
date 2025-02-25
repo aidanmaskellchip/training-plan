@@ -1,9 +1,12 @@
 package application
 
 import (
+	"github.com/ThreeDotsLabs/watermill"
+	"github.com/ThreeDotsLabs/watermill/message"
 	"net/http"
 	"training-plan/internal/application/action"
 	"training-plan/internal/application/query"
+	"training-plan/internal/infrastructure/event/events"
 	"training-plan/internal/transport"
 	"training-plan/internal/transport/request"
 	"training-plan/internal/transport/response"
@@ -18,10 +21,22 @@ func (app *App) CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = action.CreateUserAction(&input, app.Repos)
+	user, err := action.CreateUserAction(&input, app.Repos)
 	if err != nil {
 		response.BadRequestResponse(w, r, err)
 		return
+	}
+
+	evData := events.UserCreatedEvent{
+		UserID:   user.ID.String(),
+		Username: user.Username,
+	}
+
+	msg := message.NewMessage(watermill.NewUUID(), evData.ToBytes())
+
+	err = app.SqsPub.Publish("user_created_topic", msg)
+	if err != nil {
+		response.BadRequestResponse(w, r, err)
 	}
 
 	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)

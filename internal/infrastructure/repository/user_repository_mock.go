@@ -13,8 +13,8 @@ type UserRepoMock struct {
 
 const MagicFailingUserId = "99999999-8888-1111-9999-111111111111"
 
-func (ur UserRepoMock) Create(user model.User) error {
-	return nil
+func (ur UserRepoMock) Create(user model.User) (*model.User, error) {
+	return &user, nil
 }
 
 func (ur UserRepoMock) FindByID(id uuid.UUID) (user model.User, err error) {

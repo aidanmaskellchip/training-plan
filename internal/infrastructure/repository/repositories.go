@@ -11,7 +11,7 @@ import (
 var ErrNoRecord = errors.New("no matching record found")
 
 type UserRepository interface {
-	Create(user model.User) error
+	Create(user model.User) (*model.User, error)
 	FindByID(id uuid.UUID) (user model.User, err error)
 }
 type UserActivityRepository interface {
