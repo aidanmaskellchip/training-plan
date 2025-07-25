@@ -1,20 +1,63 @@
 # Training Plan Creator
 
 ## Overview
-This project is in the early stages of its life. In time, it will become a creator of running training plans, based 
-on your current abilities and goals.
+This project is an evolving application designed to generate personalized running training plans. It aims to provide tailored plans based on a user's current running abilities, historical activity data, and specific race goals (e.g., 5K, 10K, Half Marathon, Full Marathon). The system will intelligently adapt training schedules to help users achieve their fitness objectives.
 
-## Local development
+## Features
+- **Personalized Plan Generation:** Create training plans customized to individual running profiles and goals.
+- **Activity Tracking Integration:** (Future) Integrate with external services to import and analyze user activity data.
+- **Progress Monitoring:** (Future) Visualize user progress and adapt plans dynamically.
+- **API-Driven:** A robust backend API to manage users, running profiles, and training plans.
+
+## Technologies
+- **Backend:** Go
+- **Database:** PostgreSQL
+- **Containerization:** Docker, Docker Compose
+- **Dependency Management:** Go Modules
+- **Testing:** Go's built-in testing framework, Testify
+
+## Local Development
+
+### Prerequisites
+- Go (version 1.24.4 or higher recommended)
+- Docker and Docker Compose
 
 ### Setup
-- Run `make setup`
+To get the project up and running locally, execute the setup command:
+```bash
+make setup
+```
+This command will:
+1.  Build the Docker images for the application services.
+2.  Start the PostgreSQL database and other necessary services using Docker Compose.
+3.  Run database migrations to set up the schema.
+4.  Install Go dependencies.
+
+### Running the Application
+After setup, you can start the API service:
+```bash
+make run-api
+```
+The API will typically be accessible at `http://localhost:8080` (or as configured in `docker-compose.yml`).
 
 ### Local Database
-- Upon running `make setup`, the local postgres database is accessible through the port 8432.
-- The credentials for accessing the db can be found in the `docker-compose.yml`
+- The local PostgreSQL database is accessible via port `8432`.
+- Database credentials can be found within the `docker-compose.yml` file.
 
-### Database Utils
-Migrations can be invoked by running `make run-migrations`
+### Database Utilities
+- **Run Migrations:** To apply any new database migrations, use:
+  ```bash
+  make run-migrations
+  ```
 
 ### Testing
-Run 'make go-tests'
+To run all Go tests and generate a coverage report:
+```bash
+make go-tests
+```
+
+## Contributing
+Contributions are welcome! Please feel free to open issues or submit pull requests.
+
+## License
+[Specify your license here, e.g., MIT License]
