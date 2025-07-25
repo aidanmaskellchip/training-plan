@@ -1,6 +1,7 @@
 package planfactory
 
 import (
+	"fmt"
 	"sync"
 	weekfactory "training-plan/internal/domain/factory/week_factory"
 	"training-plan/internal/domain/model"
@@ -29,8 +30,7 @@ func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 	go func() {
 		defer wg.Done()
 
-		err = setLongRuns(&weeks, rp.LongRunDay, rp.PlanLength)
-		if err != nil {
+		if err := setLongRuns(&weeks, rp.LongRunDay, rp.PlanLength); err != nil {
 			errChn <- err
 		}
 	}()
@@ -38,13 +38,19 @@ func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 	go func() {
 		defer wg.Done()
 
-		err = setEasyRuns(&weeks, rd, rp.LongRunDay, rp.PlanLength)
-		if err != nil {
+		if err := setEasyRuns(&weeks, rd, rp.LongRunDay, rp.PlanLength); err != nil {
 			errChn <- err
 		}
 	}()
 
 	wg.Wait()
+	close(errChn)
+
+	for e := range errChn {
+		if e != nil {
+			return model.Plan{}, e
+		}
+	}
 
 	// long runs distances
 	// easy run distances
@@ -54,17 +60,23 @@ func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 }
 
 func setLongRuns(weeks *[]model.ActivityWeek, longRunDay int, planLength int) error {
+	if _, ok := valueobjects.HalfMarathonLongDistancesMap[planLength]; !ok {
+		return fmt.Errorf("invalid plan length: %d", planLength)
+	}
 	for i, w := range *weeks {
 		if i == len(*weeks)-1 {
 			return nil
 		}
 
-		lrd, err := w.GetDayByIndex(longRunDay)
+		lrdPtr, err := w.GetDayByIndex(longRunDay)
 		if err != nil {
 			return err
 		}
 
-		lrd.Distance = valueobjects.HalfMarathonLongDistancesMap[planLength][i]
+		if i >= len(valueobjects.HalfMarathonLongDistancesMap[planLength]) {
+			return fmt.Errorf("index out of bounds for long run distances: %d", i)
+		}
+		lrdPtr.Distance = valueobjects.HalfMarathonLongDistancesMap[planLength][i]
 	}
 
 	return nil
@@ -79,6 +91,9 @@ func setEasyRuns(
 	longRunDay int,
 	planLength int,
 ) error {
+	if _, ok := valueobjects.HalfMarathonEasyDistancesMap[planLength]; !ok {
+		return fmt.Errorf("invalid plan length: %d", planLength)
+	}
 	for i, w := range *weeks {
 		if i == len(*weeks)-1 {
 			return nil
@@ -89,12 +104,15 @@ func setEasyRuns(
 			return err
 		}
 
-		erd, err := w.GetDayByIndex(easyIndex)
+		erdPtr, err := w.GetDayByIndex(easyIndex)
 		if err != nil {
 			return err
 		}
 
-		erd.Distance = valueobjects.HalfMarathonLongDistancesMap[planLength][i]
+		if i >= len(valueobjects.HalfMarathonEasyDistancesMap[planLength]) {
+			return fmt.Errorf("index out of bounds for easy run distances: %d", i)
+		}
+		erdPtr.Distance = valueobjects.HalfMarathonEasyDistancesMap[planLength][i]
 	}
 
 	return nil
