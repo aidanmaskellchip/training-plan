@@ -10,6 +10,7 @@ import (
 )
 
 const MagicFailingRunningProfileId = "99999999-8888-1111-9999-111111111111"
+const MagicFailingRunningProfileUserId = "11111111-1111-1111-1111-111111111111"
 
 type RunningProfileRepoMock struct {
 	db *gorm.DB
@@ -28,11 +29,19 @@ func (ur RunningProfileRepoMock) FindByID(id uuid.UUID) (rp model.RunningProfile
 }
 
 func (rpr RunningProfileRepoMock) FindByUserID(userID uuid.UUID) (rps []model.RunningProfile, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return rps, fmt.Errorf("user not found")
+	}
+
 	return rps, nil
 }
 
 func (rpr RunningProfileRepoMock) FindLatestUserProfile(id uuid.UUID) (rp model.RunningProfile, err error) {
-	return rp, nil
+	if id == getMagicFailingID(MagicFailingUserId) || id == getMagicFailingID(MagicFailingRunningProfileUserId) {
+		return rp, fmt.Errorf("running profile not found")
+	}
+
+	return getRpMock(), nil
 }
 
 func getRpMock() model.RunningProfile {

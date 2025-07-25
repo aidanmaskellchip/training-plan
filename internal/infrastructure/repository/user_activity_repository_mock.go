@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"training-plan/internal/domain/model"
@@ -20,10 +21,16 @@ func (ur UserActivityRepoMock) FindByID(id uuid.UUID) (ua model.UserActivity, er
 }
 
 func (ur UserActivityRepoMock) GetFastestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return stats, fmt.Errorf("error")
+	}
 	return
 }
 
 func (ur UserActivityRepoMock) GetLongestUserActivity(userID uuid.UUID) (stats model.ActivityStats, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return stats, fmt.Errorf("error")
+	}
 	return
 }
 
@@ -36,6 +43,9 @@ func (ur UserActivityRepoMock) GetLongestCommunityActivity() (stats model.Activi
 }
 
 func (ur UserActivityRepoMock) GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return t, fmt.Errorf("error")
+	}
 	return
 }
 
