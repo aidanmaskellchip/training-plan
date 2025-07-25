@@ -122,6 +122,29 @@ func (app *App) GetUserStatsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (app *App) GetUserAccoladesHandler(w http.ResponseWriter, r *http.Request) {
+	id := transport.ReadParam(r, "id")
+
+	accolades, err := app.AccoladeService.GetUserAccolades(id)
+	if err != nil {
+		app.Logger.Println(err)
+		response.ServerErrorResponse(w, r)
+		return
+	}
+
+	err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{
+		"msg": "success",
+		"data": transport.Envelope{
+			"accolades": accolades,
+		},
+	}, nil)
+
+	if err != nil {
+		app.Logger.Println(err)
+		response.ServerErrorResponse(w, r)
+	}
+}
+
 func (app *App) GetUserProfileHandler(w http.ResponseWriter, r *http.Request) {
 	id := transport.ReadParam(r, "id")
 

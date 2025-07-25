@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine as go
+FROM golang:1.24-alpine as go
 
 # Creates an application directory to hold your application’s source code
 WORKDIR /app

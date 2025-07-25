@@ -17,7 +17,7 @@ RESET    := $(shell tput -Txterm sgr0)
 ################# DOCKER ########################
 #################################################
 setup:
-	make docker-volume-create
+#	make docker-volume-create
 	make docker-network-create
 	make docker-build-go-image
 	make docker-up
@@ -39,7 +39,7 @@ docker-up:
 	DOCKER_NETWORK_DB_REF=${DOCKER_NETWORK_DB_REF} docker-compose -f docker-compose.yml up --build --force-recreate ${UP_ARGS}
 
 start-server:
-	go run ./cmd/api
+	make go-run-cmd cmd='go run ./cmd/api'
 
 run-migrations:
 	go run cmd/fixture/migrate/main.go
@@ -48,7 +48,7 @@ run-migrations:
 ##### Go #####
 ##############
 go-run-cmd:
-	docker run -it --rm --env-file ./.env -v ${DOCKER_VOLUME_APP_REF}:/go/src/app --network ${DOCKER_NETWORK_DB_REF} ${DOCKER_GO_IMAGE_REF} ${cmd}
+	docker run --rm --env-file ./.env -v ${DOCKER_VOLUME_APP_REF}:/go/src/app --network ${DOCKER_NETWORK_DB_REF} ${DOCKER_GO_IMAGE_REF} ${cmd}
 
 go-tests:
 	go test -v ./...
