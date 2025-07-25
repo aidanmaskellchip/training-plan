@@ -15,24 +15,24 @@ type ActivityWeek struct {
 	Sun valueobjects.Activity
 }
 
-func (aw ActivityWeek) GetDayByIndex(i int) (valueobjects.Activity, error) {
+func (aw *ActivityWeek) GetDayByIndex(i int) (*valueobjects.Activity, error) {
 	switch i {
 	case 0:
-		return aw.Mon, nil
+		return &aw.Mon, nil
 	case 1:
-		return aw.Tue, nil
+		return &aw.Tue, nil
 	case 2:
-		return aw.Wed, nil
+		return &aw.Wed, nil
 	case 3:
-		return aw.Thu, nil
+		return &aw.Thu, nil
 	case 4:
-		return aw.Fri, nil
+		return &aw.Fri, nil
 	case 5:
-		return aw.Sat, nil
+		return &aw.Sat, nil
 	case 6:
-		return aw.Sun, nil
+		return &aw.Sun, nil
 	default:
-		return valueobjects.Activity{}, errors.New("invalid activity index")
+		return nil, errors.New("invalid activity index")
 	}
 }
 

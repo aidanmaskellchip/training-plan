@@ -6,15 +6,16 @@ import (
 )
 
 func NewActivityType(at string) (vo.ActivityType, error) {
-	err := errors.New("invalid activity type")
+	found := false
 	for _, a := range vo.GetActivityTypeStrings() {
 		if a == at {
-			err = nil
+			found = true
+			break
 		}
 	}
 
-	if err != nil {
-		return vo.ActivityType{}, err
+	if !found {
+		return vo.ActivityType{}, errors.New("invalid activity type")
 	}
 
 	return vo.ActivityType{Type: at}, nil
