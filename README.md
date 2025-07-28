@@ -55,9 +55,3 @@ To run all Go tests and generate a coverage report:
 ```bash
 make go-tests
 ```
-
-## Contributing
-Contributions are welcome! Please feel free to open issues or submit pull requests.
-
-## License
-[Specify your license here, e.g., MIT License]
