@@ -43,11 +43,12 @@ func RunningDaysFromJson(days []byte) (RunningDays, error) {
 //		IntervalsRun: []int{},
 //	}
 func RDStructure(rd RunningDays, longRunDay, rdsPerWeek int) (rds map[ActivityType][]int, err error) {
+	rds = make(map[ActivityType][]int)
 	rds[LongRun] = append(rds[LongRun], longRunDay)
 
 	filDays := rd.FilteredDays()
 
-	for i, _ := range filDays {
+	for _, i := range filDays {
 		if i != longRunDay {
 			rds[EasyRun] = append(rds[EasyRun], i)
 		}
@@ -57,7 +58,7 @@ func RDStructure(rd RunningDays, longRunDay, rdsPerWeek int) (rds map[ActivityTy
 		return rds, nil
 	}
 
-	for i, _ := range filDays {
+	for _, i := range filDays {
 		if i != longRunDay || i != rds[EasyRun][0] {
 			rds[RacePaceRun] = append(rds[RacePaceRun], i)
 		}
@@ -67,7 +68,7 @@ func RDStructure(rd RunningDays, longRunDay, rdsPerWeek int) (rds map[ActivityTy
 		return rds, nil
 	}
 
-	for i, _ := range filDays {
+	for _, i := range filDays {
 		if i != longRunDay || i != rds[EasyRun][0] || i != rds[RacePaceRun][0] {
 			rds[EasyRun] = append(rds[EasyRun], i)
 		}
@@ -79,7 +80,7 @@ func RDStructure(rd RunningDays, longRunDay, rdsPerWeek int) (rds map[ActivityTy
 func (rd *RunningDays) FilteredDays() (days []int) {
 	for i, day := range rd.Days {
 		if day == 1 {
-			days[i] = day
+			days = append(days, i)
 		}
 	}
 

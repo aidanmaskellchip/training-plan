@@ -8,7 +8,7 @@ import (
 )
 
 type UserRepoMock struct {
-	db *gorm.DB
+	_ *gorm.DB
 }
 
 const MagicFailingUserId = "99999999-8888-1111-9999-111111111111"

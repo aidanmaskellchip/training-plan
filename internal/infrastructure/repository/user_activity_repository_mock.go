@@ -9,7 +9,7 @@ import (
 )
 
 type UserActivityRepoMock struct {
-	db *gorm.DB
+	_ *gorm.DB
 }
 
 func (ur UserActivityRepoMock) Create(ua model.UserActivity) error {

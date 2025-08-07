@@ -5,7 +5,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"training-plan/internal/infrastructure/config"
-	"training-plan/internal/infrastructure/database/db_dsn"
+	dbdsn "training-plan/internal/infrastructure/database/db_dsn"
 )
 
 func ConnectDb(conf config.Config) (*gorm.DB, error) {
