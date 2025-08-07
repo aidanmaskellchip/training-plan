@@ -33,12 +33,7 @@ This command will:
 3.  Run database migrations to set up the schema.
 4.  Install Go dependencies.
 
-### Running the Application
-After setup, you can start the API service:
-```bash
-make run-api
-```
-The API will typically be accessible at `http://localhost:8080` (or as configured in `docker-compose.yml`).
+The API will typically be accessible at `http://localhost:4000`.
 
 ### Local Database
 - The local PostgreSQL database is accessible via port `8432`.
@@ -49,6 +44,12 @@ The API will typically be accessible at `http://localhost:8080` (or as configure
   ```bash
   make run-migrations
   ```
+
+### Linting
+To run the Go linter on the project:
+```bash
+make go-lint
+```
 
 ### Testing
 To run all Go tests and generate a coverage report:

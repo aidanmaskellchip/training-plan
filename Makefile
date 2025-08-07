@@ -18,7 +18,6 @@ RESET    := $(shell tput -Txterm sgr0)
 ################# DOCKER ########################
 #################################################
 setup:
-#	make create-dot-env
 	make docker-build-cmd
 	make docker-network-create
 	make docker-build-app
@@ -38,17 +37,8 @@ docker-build-app:
 docker-up:
 	DOCKER_NETWORK_DB_REF=${DOCKER_NETWORK_DB_REF} docker-compose -f docker-compose.yml up --build --force-recreate ${UP_ARGS}
 
-start-server:
-	make go-run-cmd cmd='go run cmd/api/main.go'
-
 run-migrations:
 	make go-run-cmd cmd='go run cmd/fixture/migrate/main.go'
-
-#################
-# Configuration #
-#################
-create-dot-env:
-	if [ ! -f ./build/local/.env ]; then cp ./build/local/.env.example ./build/local/.env ; fi;
 
 ##############
 ##### Go #####
@@ -67,3 +57,6 @@ go-mod-tidy:
 
 go-vendor-download:
 	make go-run-cmd cmd='go mod vendor'
+
+go-lint:
+	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint:v1.55.2 golangci-lint run -v
