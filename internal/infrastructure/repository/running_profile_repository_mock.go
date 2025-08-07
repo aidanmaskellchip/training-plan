@@ -13,7 +13,7 @@ const MagicFailingRunningProfileId = "99999999-8888-1111-9999-111111111111"
 const MagicFailingRunningProfileUserId = "11111111-1111-1111-1111-111111111111"
 
 type RunningProfileRepoMock struct {
-	db *gorm.DB
+	_ *gorm.DB
 }
 
 func (ur RunningProfileRepoMock) Create(_ model.RunningProfile) error {

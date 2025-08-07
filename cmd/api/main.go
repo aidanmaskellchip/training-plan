@@ -5,8 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
-	"os/signal"
 	"time"
 	"training-plan/internal/application"
 )
@@ -30,23 +28,21 @@ func main() {
 		}
 	}()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	//go func() {
+	//	c := make(chan os.Signal, 1)
+	//	signal.Notify(c, os.Interrupt, os.Kill)
+	//	<-c
+	//	cancel()
+	//}()
 
-	go func() {
-		c := make(chan os.Signal, 1)
-		signal.Notify(c, os.Interrupt, os.Kill)
-		<-c
-		cancel()
-	}()
-
-	runHTTP(ctx)
+	runHTTP()
 
 	err := app.EventRouter.Close()
 
 	app.Logger.Fatal(err)
 }
 
-func runHTTP(ctx context.Context) {
+func runHTTP() {
 	app.Logger.Printf("starting %s server", "4001")
 
 	srv := &http.Server{
@@ -56,11 +52,6 @@ func runHTTP(ctx context.Context) {
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,
 	}
-
-	go func() {
-		<-ctx.Done()
-		_ = srv.Close()
-	}()
 
 	if err := srv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		panic(err)

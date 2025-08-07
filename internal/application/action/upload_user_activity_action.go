@@ -2,7 +2,7 @@ package action
 
 import (
 	"errors"
-	"training-plan/internal/domain/factory/activity_type_factory"
+	activitytypefactory "training-plan/internal/domain/factory/activity_type_factory"
 	"training-plan/internal/domain/model"
 	"training-plan/internal/infrastructure/repository"
 	"training-plan/internal/transport/request"

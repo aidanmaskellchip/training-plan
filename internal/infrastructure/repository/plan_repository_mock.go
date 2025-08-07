@@ -8,14 +8,14 @@ import (
 )
 
 type PlanRepoMock struct {
-	db *gorm.DB
+	_ *gorm.DB
 }
 
-func (pr PlanRepoMock) Create(plan model.Plan) error {
+func (pr PlanRepoMock) Create(_ model.Plan) error {
 	return nil
 }
 
-func (pr PlanRepoMock) FindByID(id uuid.UUID) (p model.Plan, err error) {
+func (pr PlanRepoMock) FindByID(_ uuid.UUID) (p model.Plan, err error) {
 	return p, nil
 }
 

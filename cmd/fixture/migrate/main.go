@@ -22,7 +22,7 @@ func main() {
 
 	err := migrator.Migrate(app.DB)
 	if err != nil {
-		app.Logger.Panic(fmt.Sprintf("failed database migration: %s", err))
+		app.Logger.Panicf("failed database migration: %s", err)
 	}
 
 	app.Logger.Println("successfully migrated database")
