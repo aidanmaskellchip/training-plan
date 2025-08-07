@@ -31,7 +31,7 @@ func Get() (*Config, error) {
 		AppEnv:     "",
 		Port:       "4000",
 		Version:    "0.0.1",
-		DbHost:     "127.0.0.1",
+		DbHost:     "tp_db",
 		DbDriver:   "postgres",
 		DbUser:     "training-plan_user",
 		DbPassword: "training-plan_password",
