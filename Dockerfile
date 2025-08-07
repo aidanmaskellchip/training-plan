@@ -1,4 +1,4 @@
-FROM golang:1.24-alpine as go
+FROM golang:1.24-alpine as builder
 
 # Creates an application directory to hold your application’s source code
 WORKDIR /app
@@ -11,7 +11,15 @@ RUN go mod download
 
 # Copy the source code. Note the slash at the end, as explained in
 # https://docs.docker.com/reference/dockerfile/#copy
-COPY *.go ./
+COPY . .
+
+RUN go build -o /training-plan cmd/api/main.go
+
+FROM alpine:latest as runner
+
+WORKDIR /
+
+COPY --from=builder /training-plan /training-plan
 
 # Specifies the executable command that runs when the container starts
 CMD ["/training-plan"]

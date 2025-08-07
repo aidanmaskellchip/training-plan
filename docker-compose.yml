@@ -8,6 +8,8 @@ services:
       - EDGE_PORT=4566
     ports:
       - "4566-4597:4566-4597"
+    networks:
+      - training-plan_db
     healthcheck:
       test: awslocal sqs list-queues && awslocal sns list-topics
       interval: 5s
@@ -15,13 +17,37 @@ services:
       retries: 5
       start_period: 30s
 
+  tp_app:
+    container_name: tp_app
+    image: training-plan_go:latest
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./.env
+    networks:
+        - training-plan_db
+    depends_on:
+      tp_db:
+        condition: service_healthy
+
   tp_db:
     container_name: tp_db
     image: postgres:latest
     ports:
       - "8432:5432"
+    networks:
+      - training-plan_db
     environment:
       - POSTGRES_PASSWORD=training-plan_password
       - POSTGRES_USER=training-plan_user
       - POSTGRES_DB=training-plan_db
       - PGDATA=/var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U training-plan_user -d training-plan_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  training-plan_db:
+    external: true
