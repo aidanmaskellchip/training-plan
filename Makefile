@@ -47,7 +47,7 @@ go-run-cmd:
 	docker run --rm --env-file ./.env -v ${PWD}:/app --network ${DOCKER_NETWORK_DB_REF} ${DOCKER_GO_CMD_IMAGE_REF} ${cmd}
 
 go-tests:
-	go test -v ./...
+	make go-run-cmd cmd='go test -v ./...'
 
 go-get-lib:
 	make go-run-cmd cmd='go get -v ${lib}'
