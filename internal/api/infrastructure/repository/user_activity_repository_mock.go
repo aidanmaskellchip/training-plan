@@ -1,0 +1,54 @@
+package repository
+
+import (
+	"fmt"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+	model2 "training-plan/internal/api/domain/model"
+	vo "training-plan/internal/api/domain/value_objects"
+)
+
+type UserActivityRepoMock struct {
+	_ *gorm.DB
+}
+
+func (ur UserActivityRepoMock) Create(ua model2.UserActivity) error {
+	return nil
+}
+
+func (ur UserActivityRepoMock) FindByID(id uuid.UUID) (ua model2.UserActivity, err error) {
+	return ua, nil
+}
+
+func (ur UserActivityRepoMock) GetFastestUserActivity(userID uuid.UUID) (stats model2.ActivityStats, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return stats, fmt.Errorf("error")
+	}
+	return
+}
+
+func (ur UserActivityRepoMock) GetLongestUserActivity(userID uuid.UUID) (stats model2.ActivityStats, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return stats, fmt.Errorf("error")
+	}
+	return
+}
+
+func (ur UserActivityRepoMock) GetFastestCommunityActivity() (stats model2.ActivityStats, err error) {
+	return
+}
+
+func (ur UserActivityRepoMock) GetLongestCommunityActivity() (stats model2.ActivityStats, err error) {
+	return
+}
+
+func (ur UserActivityRepoMock) GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error) {
+	if userID == getMagicFailingID(MagicFailingUserId) {
+		return t, fmt.Errorf("error")
+	}
+	return
+}
+
+func (ur UserActivityRepoMock) Update(act model2.UserActivity) error {
+	return nil
+}

@@ -1,0 +1,85 @@
+package action
+
+import (
+	"errors"
+	"github.com/google/uuid"
+	"github.com/stretchr/testify/assert"
+	"testing"
+	"training-plan/internal/api/domain/value_objects"
+	repository2 "training-plan/internal/api/infrastructure/repository"
+	"training-plan/internal/api/transport/request"
+)
+
+func TestUploadUserActivityAction(t *testing.T) {
+	t.Parallel()
+
+	repos := repository2.NewMockRepos()
+
+	tests := []struct {
+		name    string
+		request request.UploadUserActivityRequest
+		err     error
+	}{
+		{
+			name: "Valid Upload",
+			request: request.UploadUserActivityRequest{
+				UserID:   uuid.New(),
+				Type:     valueobjects.EasyRun.Type,
+				Distance: 5.00,
+				Pace:     5.00,
+			},
+			err: nil,
+		},
+		{
+			name: "Invalid type",
+			request: request.UploadUserActivityRequest{
+				UserID:   uuid.New(),
+				Type:     "invalid run type",
+				Distance: 5.00,
+				Pace:     5.00,
+			},
+			err: errors.New("invalid activity type: invalid run type"),
+		},
+		{
+			name: "Invalid distance",
+			request: request.UploadUserActivityRequest{
+				UserID:   uuid.New(),
+				Type:     valueobjects.EasyRun.Type,
+				Distance: 0,
+				Pace:     5.00,
+			},
+			err: errors.New("distance is invalid"),
+		},
+		{
+			name: "Invalid pace",
+			request: request.UploadUserActivityRequest{
+				UserID:   uuid.New(),
+				Type:     valueobjects.EasyRun.Type,
+				Distance: 5.00,
+				Pace:     0,
+			},
+			err: errors.New("pace is invalid"),
+		},
+		{
+			name: "User not found",
+			request: request.UploadUserActivityRequest{
+				Type:     valueobjects.EasyRun.Type,
+				Distance: 5.00,
+				Pace:     1.00,
+			},
+			err: errors.New("user not found"),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.request.UserID == uuid.Nil {
+				id, _ := uuid.Parse(repository2.MagicFailingUserId)
+				tt.request.UserID = id
+			}
+
+			err := UploadUserActivityAction(&tt.request, repos)
+			assert.Equal(t, tt.err, err)
+		})
+	}
+}

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-	"training-plan/internal/application"
+	"training-plan/internal/api/application"
 )
 
 var app application.App
