@@ -1,0 +1,28 @@
+package repository
+
+import (
+	"fmt"
+	"github.com/google/uuid"
+	"gorm.io/gorm"
+	"training-plan/internal/api/domain/model"
+)
+
+type PlanRepoMock struct {
+	_ *gorm.DB
+}
+
+func (pr PlanRepoMock) Create(_ model.Plan) error {
+	return nil
+}
+
+func (pr PlanRepoMock) FindByID(_ uuid.UUID) (p model.Plan, err error) {
+	return p, nil
+}
+
+func (pr PlanRepoMock) FindLatestUserPlan(id uuid.UUID) (p model.Plan, err error) {
+	if id == getMagicFailingID(MagicFailingUserId) {
+		return p, fmt.Errorf("plan not found")
+	}
+
+	return p, nil
+}
