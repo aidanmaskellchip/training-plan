@@ -56,3 +56,38 @@ To run all Go tests and generate a coverage report:
 ```bash
 make go-tests
 ```
+
+## AI Agent (Chatbot) - Work in Progress
+
+### Overview
+The project now includes an experimental AI-powered chatbot that can interact with the training plan API through natural language conversation. This is currently a work in progress with limited functionality.
+
+### Current Capabilities
+- **User Creation:** Create new users through natural language conversation
+- **Interactive Chat:** Command-line interface for conversing with the AI agent
+
+### Prerequisites for AI Agent
+- [LM Studio](https://lmstudio.ai/) running locally on port 1234
+- A compatible language model loaded in LM Studio (e.g., gpt-oss-20b)
+- The main API server running (`make start-server`)
+
+### Getting Started with the AI Agent
+
+1. **Start the API server:**
+   ```bash
+   make start-server
+   ```
+2. **Start LM Studio:**
+- Download and install LM Studio from [lmstudio.ai](https://lmstudio.ai/).
+- Load a compatible language model (e.g., gpt-oss-20b).
+- Start the local server on port 1234.
+3. **Run the AI Agent:**
+   ```bash
+   go run cmd/ai-agent/main.go
+   ```
+   This will start a command-line interface where you can interact with the AI agent.
+
+4. **Start Chatting:**
+
+**Current Limitations:**
+- This is a big work in progress and may not have all features implemented.
