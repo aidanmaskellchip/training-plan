@@ -14,7 +14,6 @@ func NewCreateUserTool(apiClient *client.APIClient) *tool.FunctionTool {
 		func(ctx context.Context, params map[string]interface{}) (interface{}, error) {
 			username := params["username"].(string)
 
-			// Create user if doesn't exist
 			err := apiClient.CreateUser(username)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create user: %w", err)

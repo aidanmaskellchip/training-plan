@@ -19,6 +19,7 @@ func NewTrainingPlanAgent(cfg *config.AIConfig) *agent.Agent {
 	// Add all tools
 	assistant.WithTools(
 		tools.NewCreateUserTool(apiClient),
+		tools.NewCreateRunningProfileTool(apiClient),
 		// Add more tools as needed
 	)
 
