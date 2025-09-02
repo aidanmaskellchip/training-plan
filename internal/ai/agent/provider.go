@@ -7,7 +7,9 @@ import (
 
 func NewLMStudioProvider(cfg *config.AIConfig) *lmstudio.Provider {
 	provider := lmstudio.NewProvider()
+
 	provider.SetBaseURL(cfg.LMStudioBaseURL)
 	provider.SetDefaultModel(cfg.LMStudioModel)
+
 	return provider
 }
