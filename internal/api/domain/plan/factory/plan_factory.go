@@ -14,7 +14,7 @@ func NewPlan(rp model2.RunningProfile) (p model2.Plan, err error) {
 
 	var weeks []model2.ActivityWeek
 	for i := 0; i < rp.PlanLength; i++ {
-		weeks = append(weeks, weekfactory.NewWeek())
+		weeks = append(weeks, NewWeek())
 	}
 
 	rd, err := entities.RunningDaysFromJson(rp.RunningDays)

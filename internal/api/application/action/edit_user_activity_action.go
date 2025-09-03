@@ -23,7 +23,7 @@ func EditUserActivityAction(actId string, data *request.EditUserActivityRequest,
 	}
 
 	if data.Type != nil {
-		at, err := factory.activitytypefactory.NewActivityType(*data.Type)
+		at, err := factory.NewActivityType(*data.Type)
 		if err != nil {
 			return err
 		}

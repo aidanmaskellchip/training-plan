@@ -18,7 +18,7 @@ func UploadUserActivityAction(data *request.UploadUserActivityRequest, repos *re
 		return errors.New("user not found")
 	}
 
-	at, err := factory.activitytypefactory.NewActivityType(data.Type)
+	at, err := factory.NewActivityType(data.Type)
 	if err != nil {
 		return err
 	}

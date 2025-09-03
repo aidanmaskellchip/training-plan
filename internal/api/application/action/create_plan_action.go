@@ -25,7 +25,7 @@ func CreatePlanAction(data *request.CreatePlanRequest, repos *repository.Reposit
 		return plan, err
 	}
 
-	plan, err = factory.planfactory.NewPlan(rp)
+	plan, err = factory.NewPlan(rp)
 	if err != nil {
 		return plan, err
 	}
