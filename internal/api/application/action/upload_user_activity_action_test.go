@@ -5,7 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 	repository2 "training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -24,7 +24,7 @@ func TestUploadUserActivityAction(t *testing.T) {
 			name: "Valid Upload",
 			request: request.UploadUserActivityRequest{
 				UserID:   uuid.New(),
-				Type:     valueobjects.EasyRun.Type,
+				Type:     entities.EasyRun.Type,
 				Distance: 5.00,
 				Pace:     5.00,
 			},
@@ -44,7 +44,7 @@ func TestUploadUserActivityAction(t *testing.T) {
 			name: "Invalid distance",
 			request: request.UploadUserActivityRequest{
 				UserID:   uuid.New(),
-				Type:     valueobjects.EasyRun.Type,
+				Type:     entities.EasyRun.Type,
 				Distance: 0,
 				Pace:     5.00,
 			},
@@ -54,7 +54,7 @@ func TestUploadUserActivityAction(t *testing.T) {
 			name: "Invalid pace",
 			request: request.UploadUserActivityRequest{
 				UserID:   uuid.New(),
-				Type:     valueobjects.EasyRun.Type,
+				Type:     entities.EasyRun.Type,
 				Distance: 5.00,
 				Pace:     0,
 			},
@@ -63,7 +63,7 @@ func TestUploadUserActivityAction(t *testing.T) {
 		{
 			name: "User not found",
 			request: request.UploadUserActivityRequest{
-				Type:     valueobjects.EasyRun.Type,
+				Type:     entities.EasyRun.Type,
 				Distance: 5.00,
 				Pace:     1.00,
 			},

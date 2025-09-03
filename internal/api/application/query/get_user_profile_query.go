@@ -4,6 +4,7 @@ import (
 	"log"
 	"sync"
 	model2 "training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/plan/entities"
 	"training-plan/internal/api/domain/value_objects"
 	"training-plan/internal/api/infrastructure/repository"
 	response2 "training-plan/internal/api/transport/response"
@@ -22,12 +23,12 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 
 	actChan := make(chan model2.ActivityStats, 1)
 	runProfChan := make(chan model2.RunningProfile, 1)
-	favRunChan := make(chan valueobjects.ActivityType, 1)
+	favRunChan := make(chan entities.ActivityType, 1)
 
 	go func() {
 		defer wg.Done()
 
-		longRun, err := repos.UserActivityRepository.GetLongestUserActivity(userID.ID)
+		longRun, err := repos.GetLongestUserActivity(userID.ID)
 		if err != nil {
 			log.Println(err)
 			return
@@ -39,7 +40,7 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 	go func() {
 		defer wg.Done()
 
-		favRun, err := repos.UserActivityRepository.GetMostCommonActivityType(userID.ID)
+		favRun, err := repos.GetMostCommonActivityType(userID.ID)
 		if err != nil {
 			log.Println(err)
 			return
@@ -51,7 +52,7 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 	go func() {
 		defer wg.Done()
 
-		runProf, err := repos.RunningProfileRepository.FindLatestUserProfile(userID.ID)
+		runProf, err := repos.FindLatestUserProfile(userID.ID)
 		if err != nil {
 			log.Println(err)
 			return

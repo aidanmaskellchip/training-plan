@@ -13,7 +13,7 @@ var app application.App
 
 func init() {
 	var err error
-	app, err = application.Setup()
+	app, err = application.Bootstrap()
 
 	if err != nil {
 		panic(fmt.Sprintf("Unable to init the application on startup: %v", err))
@@ -47,7 +47,7 @@ func runHTTP() {
 
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%s", app.Config.Port),
-		Handler:      app.Routes(),
+		Handler:      Routes(&app),
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 30 * time.Second,

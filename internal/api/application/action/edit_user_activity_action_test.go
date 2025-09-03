@@ -3,7 +3,7 @@ package action
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -23,7 +23,7 @@ func TestEditUserActivityAction(t *testing.T) {
 	}{
 		{
 			name:    "Valid Upload",
-			actType: valueobjects.EasyRun.Type,
+			actType: entities.EasyRun.Type,
 			dist:    5.00,
 			pace:    5.00,
 			actID:   "9D8AC610-566D-4EF0-9C22-186B2A5ED793",

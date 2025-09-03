@@ -4,7 +4,7 @@ import (
 	"errors"
 	"time"
 	"training-plan/internal/api/domain/model"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -29,7 +29,7 @@ func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos
 		return err
 	}
 
-	rd := valueobjects.NewRunningDays(data.RunningDays)
+	rd := entities.NewRunningDays(data.RunningDays)
 	rdJson, err := rd.ToJson()
 	if err != nil {
 		return err

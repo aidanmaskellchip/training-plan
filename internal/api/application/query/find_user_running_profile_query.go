@@ -1,6 +1,7 @@
 package query
 
 import (
+	"training-plan/internal/api/domain/plan/entities"
 	"training-plan/internal/api/domain/value_objects"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/response"
@@ -9,13 +10,13 @@ import (
 func FindUserRunningProfilesQuery(id *string, repos *repository.Repositories) (res []response.FindRunningProfileResponse, err error) {
 	userID := valueobjects.NewUserID(*id)
 
-	rps, err := repos.RunningProfileRepository.FindByUserID(userID.ID)
+	rps, err := repos.FindByUserID(userID.ID)
 	if err != nil {
 		return res, err
 	}
 
 	for _, rp := range rps {
-		runningDays, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
+		runningDays, err := entities.RunningDaysFromJson(rp.RunningDays)
 		if err != nil {
 			return res, err
 		}

@@ -17,7 +17,7 @@ func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.
 	wg.Add(4)
 
 	go func() {
-		act, err := repos.UserActivityRepository.GetFastestUserActivity(userID.ID)
+		act, err := repos.GetFastestUserActivity(userID.ID)
 		if err != nil {
 			log.Println(err)
 			wg.Done()
@@ -29,7 +29,7 @@ func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.
 	}()
 
 	go func() {
-		act, err := repos.UserActivityRepository.GetLongestUserActivity(userID.ID)
+		act, err := repos.GetLongestUserActivity(userID.ID)
 		if err != nil {
 			log.Println(err)
 			wg.Done()
@@ -41,7 +41,7 @@ func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.
 	}()
 
 	go func() {
-		act, err := repos.UserActivityRepository.GetFastestCommunityActivity()
+		act, err := repos.GetFastestCommunityActivity()
 		if err != nil {
 			log.Println(err)
 			wg.Done()
@@ -53,7 +53,7 @@ func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.
 	}()
 
 	go func() {
-		act, err := repos.UserActivityRepository.GetLongestCommunityActivity()
+		act, err := repos.GetLongestCommunityActivity()
 		if err != nil {
 			log.Println(err)
 			wg.Done()

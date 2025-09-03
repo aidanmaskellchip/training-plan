@@ -2,8 +2,8 @@ package action
 
 import (
 	"errors"
-	"training-plan/internal/api/domain/factory/activity_type_factory"
 	"training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/plan/factory"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -18,7 +18,7 @@ func UploadUserActivityAction(data *request.UploadUserActivityRequest, repos *re
 		return errors.New("user not found")
 	}
 
-	at, err := activitytypefactory.NewActivityType(data.Type)
+	at, err := factory.activitytypefactory.NewActivityType(data.Type)
 	if err != nil {
 		return err
 	}

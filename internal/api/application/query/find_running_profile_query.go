@@ -1,6 +1,7 @@
 package query
 
 import (
+	"training-plan/internal/api/domain/plan/entities"
 	"training-plan/internal/api/domain/value_objects"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/response"
@@ -14,7 +15,7 @@ func FindRunningProfileQuery(id *string, repos *repository.Repositories) (res *r
 		return res, err
 	}
 
-	runningDays, err := valueobjects.RunningDaysFromJson(rp.RunningDays)
+	runningDays, err := entities.RunningDaysFromJson(rp.RunningDays)
 	if err != nil {
 		return res, err
 	}

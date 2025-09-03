@@ -1,4 +1,4 @@
-package valueobjects
+package entities
 
 type GoalDistance struct {
 	Type string `json:"goal_distance"`

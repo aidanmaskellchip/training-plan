@@ -5,7 +5,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	model2 "training-plan/internal/api/domain/model"
-	vo "training-plan/internal/api/domain/value_objects"
+	vo "training-plan/internal/api/domain/plan/entities"
 )
 
 var ErrNoRecord = errors.New("no matching record found")

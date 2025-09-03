@@ -10,7 +10,7 @@ var app application.App
 
 func init() {
 	var err error
-	app, err = application.Setup()
+	app, err = application.Bootstrap()
 
 	if err != nil {
 		panic(fmt.Sprintf("Unable to init the application or fixture: %v", err))

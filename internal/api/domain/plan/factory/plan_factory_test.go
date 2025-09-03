@@ -1,4 +1,4 @@
-package planfactory
+package factory
 
 import (
 	"encoding/json"
@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 	model2 "training-plan/internal/api/domain/model"
-	vo "training-plan/internal/api/domain/value_objects"
+	vo "training-plan/internal/api/domain/plan/entities"
 )
 
 func TestNewPlan(t *testing.T) {

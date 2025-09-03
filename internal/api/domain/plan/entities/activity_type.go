@@ -1,4 +1,4 @@
-package valueobjects
+package entities
 
 type ActivityType struct {
 	Type string `json:"type"`

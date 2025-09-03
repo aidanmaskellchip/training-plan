@@ -1,4 +1,4 @@
-package valueobjects
+package entities
 
 var (
 	HalfMarathonLongRuns12Week = []float32{6.00, 7.00, 8.00, 9.00, 10.00, 11.50, 13.00, 14.50, 16.00, 17.00, 13.00}

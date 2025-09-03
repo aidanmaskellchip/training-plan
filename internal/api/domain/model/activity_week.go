@@ -2,7 +2,8 @@ package model
 
 import (
 	"errors"
-	valueobjects2 "training-plan/internal/api/domain/value_objects"
+	valueobjects2 "training-plan/internal/api/domain/activity/entities"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
 type ActivityWeek struct {
@@ -36,7 +37,7 @@ func (aw *ActivityWeek) GetDayByIndex(i int) (*valueobjects2.Activity, error) {
 	}
 }
 
-func (aw ActivityWeek) GetEasyRunDay(days valueobjects2.RunningDays, longRunDay int) (int, error) {
+func (aw ActivityWeek) GetEasyRunDay(days entities.RunningDays, longRunDay int) (int, error) {
 	for i, v := range days.Days {
 		if v == 0 || i == longRunDay {
 			continue

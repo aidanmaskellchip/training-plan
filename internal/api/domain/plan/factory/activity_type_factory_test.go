@@ -1,9 +1,9 @@
-package activitytypefactory
+package factory
 
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	vo "training-plan/internal/api/domain/value_objects"
+	vo "training-plan/internal/api/domain/plan/entities"
 )
 
 func TestNewActivityType(t *testing.T) {

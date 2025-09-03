@@ -1,4 +1,4 @@
-package valueobjects
+package entities
 
 const (
 	STATS_TYPE_FASTEST_USER              = "fastest-user"

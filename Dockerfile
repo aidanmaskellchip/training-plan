@@ -13,9 +13,9 @@ RUN go mod download
 # https://docs.docker.com/reference/dockerfile/#copy
 COPY . .
 
-RUN go build -o /training-plan cmd/api/main.go
+RUN go build -o /training-plan cmd/api/main.go cmd/api/routes.go
 
-FROM alpine:latest as runner
+FROM alpine:latest AS runner
 
 WORKDIR /
 
