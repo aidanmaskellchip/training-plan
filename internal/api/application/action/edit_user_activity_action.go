@@ -2,7 +2,7 @@ package action
 
 import (
 	"github.com/google/uuid"
-	"training-plan/internal/api/domain/factory/activity_type_factory"
+	"training-plan/internal/api/domain/plan/factory"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -23,7 +23,7 @@ func EditUserActivityAction(actId string, data *request.EditUserActivityRequest,
 	}
 
 	if data.Type != nil {
-		at, err := activitytypefactory.NewActivityType(*data.Type)
+		at, err := factory.NewActivityType(*data.Type)
 		if err != nil {
 			return err
 		}
@@ -39,7 +39,7 @@ func EditUserActivityAction(actId string, data *request.EditUserActivityRequest,
 		userAct.Distance = *data.Distance
 	}
 
-	if err := repos.UserActivityRepository.Update(userAct); err != nil {
+	if err := repos.Update(userAct); err != nil {
 		return err
 	}
 

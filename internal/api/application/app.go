@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
+	"training-plan/internal/api/domain/accolades"
 	"training-plan/internal/api/infrastructure/accolade"
 	"training-plan/internal/api/infrastructure/config"
 	"training-plan/internal/api/infrastructure/database/db"
@@ -23,7 +24,7 @@ type App struct {
 	SqsSub          *sqs.Subscriber
 	SqsPub          *sqs.Publisher
 	EventRouter     *message.Router
-	AccoladeService AccoladeService
+	AccoladeService accolades.AccoladeService
 }
 
 func Load(
@@ -34,7 +35,7 @@ func Load(
 	sub *sqs.Subscriber,
 	pub *sqs.Publisher,
 	eventRouter *message.Router,
-	accoladeService AccoladeService,
+	accoladeService accolades.AccoladeService,
 ) (app App) {
 	app.Config = conf
 	app.Logger = logger
@@ -48,7 +49,7 @@ func Load(
 	return
 }
 
-func Setup() (app App, err error) {
+func Bootstrap() (app App, err error) {
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
 	conf, err := config.Get()

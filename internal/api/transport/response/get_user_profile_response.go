@@ -2,7 +2,7 @@ package response
 
 import (
 	"training-plan/internal/api/domain/model"
-	vo "training-plan/internal/api/domain/value_objects"
+	vo "training-plan/internal/api/domain/plan/entities"
 )
 
 type GetUserProfileResponse struct {

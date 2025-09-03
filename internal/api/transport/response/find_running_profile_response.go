@@ -3,7 +3,7 @@ package response
 import (
 	"time"
 	"training-plan/internal/api/domain/model"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
 type FindRunningProfileResponse struct {
@@ -26,7 +26,7 @@ type FindRunningProfileResponse struct {
 }
 
 func NewFindRunningProfileResponse(p model.RunningProfile) (FindRunningProfileResponse, error) {
-	rd, err := valueobjects.RunningDaysFromJson(p.RunningDays)
+	rd, err := entities.RunningDaysFromJson(p.RunningDays)
 	if err != nil {
 		return FindRunningProfileResponse{}, err
 	}

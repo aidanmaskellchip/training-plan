@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	entities2 "training-plan/internal/api/domain/activity/entities"
 	model2 "training-plan/internal/api/domain/model"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
 type UserActivityRepo struct {
@@ -54,7 +55,7 @@ func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = valueobjects.STATS_TYPE_FASTEST_USER
+	stats.Title = entities2.STATS_TYPE_FASTEST_USER
 
 	return
 }
@@ -67,7 +68,7 @@ func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = valueobjects.STATS_TYPE_LONGEST_USER
+	stats.Title = entities2.STATS_TYPE_LONGEST_USER
 
 	return
 }
@@ -79,7 +80,7 @@ func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model2.ActivityS
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = valueobjects.STATS_TYPE_FASTEST_COMMUNITY
+	stats.Title = entities2.STATS_TYPE_FASTEST_COMMUNITY
 
 	return
 }
@@ -91,12 +92,12 @@ func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model2.ActivityS
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = valueobjects.STATS_TYPE_LONGEST_COMMUNITY
+	stats.Title = entities2.STATS_TYPE_LONGEST_COMMUNITY
 
 	return
 }
 
-func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (t valueobjects.ActivityType, err error) {
+func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (t entities.ActivityType, err error) {
 	var mostCommon string
 
 	err = ur.db.Table("user_activities").
@@ -108,7 +109,7 @@ func (ur UserActivityRepo) GetMostCommonActivityType(userID uuid.UUID) (t valueo
 		Pluck("type", &mostCommon).Error
 
 	if err == nil {
-		t = valueobjects.FromActivityType(mostCommon)
+		t = entities.FromActivityType(mostCommon)
 	}
 
 	fmt.Println(t.Type)

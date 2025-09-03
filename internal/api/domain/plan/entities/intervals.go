@@ -1,4 +1,4 @@
-package valueobjects
+package entities
 
 type Intervals struct {
 	FastRepPace      float32 `json:"fastRepPace"`

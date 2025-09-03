@@ -1,4 +1,4 @@
-package application
+package accolades
 
 import (
 	"training-plan/internal/api/domain/model"

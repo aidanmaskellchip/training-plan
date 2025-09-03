@@ -3,7 +3,7 @@ package model
 import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	vo "training-plan/internal/api/domain/value_objects"
+	vo "training-plan/internal/api/domain/plan/entities"
 )
 
 type UserActivity struct {

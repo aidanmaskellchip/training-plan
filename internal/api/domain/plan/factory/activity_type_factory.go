@@ -1,8 +1,8 @@
-package activitytypefactory
+package factory
 
 import (
 	"errors"
-	vo "training-plan/internal/api/domain/value_objects"
+	vo "training-plan/internal/api/domain/plan/entities"
 )
 
 func NewActivityType(at string) (vo.ActivityType, error) {

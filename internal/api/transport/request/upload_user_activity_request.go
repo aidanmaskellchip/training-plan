@@ -3,7 +3,7 @@ package request
 import (
 	"errors"
 	"github.com/google/uuid"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
 type UploadUserActivityRequest struct {
@@ -16,7 +16,7 @@ type UploadUserActivityRequest struct {
 
 func (u *UploadUserActivityRequest) Validate() error {
 	err := errors.New("invalid activity type: " + u.Type)
-	for _, v := range valueobjects.GetActivityTypeStrings() {
+	for _, v := range entities.GetActivityTypeStrings() {
 		if v == u.Type {
 			err = nil
 		}

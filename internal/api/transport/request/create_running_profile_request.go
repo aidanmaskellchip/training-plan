@@ -3,7 +3,7 @@ package request
 import (
 	"errors"
 	"github.com/google/uuid"
-	"training-plan/internal/api/domain/value_objects"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
 type CreateRunningProfileRequest struct {
@@ -49,7 +49,7 @@ func (c *CreateRunningProfileRequest) Validate() error {
 	}
 
 	err := errors.New("invalid terrain type")
-	for _, v := range valueobjects.GetTerrainStrings() {
+	for _, v := range entities.GetTerrainStrings() {
 		if v == c.Terrain {
 			err = nil
 		}

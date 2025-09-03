@@ -24,7 +24,12 @@ func (c *APIClient) CreateUser(username string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
+
+	if resp.StatusCode != http.StatusCreated {
+		return fmt.Errorf("failed to create user: %s", resp.Status)
+	}
+
 	return nil
 }
 

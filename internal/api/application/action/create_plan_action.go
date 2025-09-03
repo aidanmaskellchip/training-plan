@@ -1,8 +1,8 @@
 package action
 
 import (
-	"training-plan/internal/api/domain/factory/plan_factory"
 	"training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/plan/factory"
 	vo "training-plan/internal/api/domain/value_objects"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
@@ -20,12 +20,12 @@ func CreatePlanAction(data *request.CreatePlanRequest, repos *repository.Reposit
 		return plan, err
 	}
 
-	rp, err := repos.RunningProfileRepository.FindLatestUserProfile(userID.ID)
+	rp, err := repos.FindLatestUserProfile(userID.ID)
 	if err != nil {
 		return plan, err
 	}
 
-	plan, err = planfactory.NewPlan(rp)
+	plan, err = factory.NewPlan(rp)
 	if err != nil {
 		return plan, err
 	}
@@ -34,7 +34,7 @@ func CreatePlanAction(data *request.CreatePlanRequest, repos *repository.Reposit
 		return plan, err
 	}
 
-	res, err := repos.PlanRepository.FindLatestUserPlan(userID.ID)
+	res, err := repos.FindLatestUserPlan(userID.ID)
 	if err != nil {
 		return plan, err
 	}

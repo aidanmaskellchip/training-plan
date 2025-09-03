@@ -59,4 +59,4 @@ go-vendor-download:
 	make go-run-cmd cmd='go mod vendor'
 
 go-lint:
-	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint:v1.55.2 golangci-lint run -v
+	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint:v2.4.0 golangci-lint run -v
