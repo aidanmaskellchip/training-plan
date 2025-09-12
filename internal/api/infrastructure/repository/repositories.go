@@ -4,36 +4,39 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	model2 "training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/plan"
 	vo "training-plan/internal/api/domain/plan/entities"
+	runningprofile "training-plan/internal/api/domain/running_profile"
+	"training-plan/internal/api/domain/user"
+	"training-plan/internal/api/domain/user_activity"
 )
 
 var ErrNoRecord = errors.New("no matching record found")
 
 type UserRepository interface {
-	Create(user model2.User) (*model2.User, error)
-	FindByID(id uuid.UUID) (user model2.User, err error)
+	Create(user *user.Entity) (*user.Entity, error)
+	FindByID(id uuid.UUID) (*user.Entity, error)
 }
 type UserActivityRepository interface {
-	Create(ua model2.UserActivity) error
-	FindByID(id uuid.UUID) (ua model2.UserActivity, err error)
-	GetFastestUserActivity(userID uuid.UUID) (stats model2.ActivityStats, err error)
-	GetLongestUserActivity(userID uuid.UUID) (stats model2.ActivityStats, err error)
-	GetFastestCommunityActivity() (stats model2.ActivityStats, err error)
-	GetLongestCommunityActivity() (stats model2.ActivityStats, err error)
+	Create(ua *useractivity.Entity) error
+	FindByID(id uuid.UUID) (ua *useractivity.Entity, err error)
+	GetFastestUserActivity(userID uuid.UUID) (stats useractivity.ActivityStats, err error)
+	GetLongestUserActivity(userID uuid.UUID) (stats useractivity.ActivityStats, err error)
+	GetFastestCommunityActivity() (stats useractivity.ActivityStats, err error)
+	GetLongestCommunityActivity() (stats useractivity.ActivityStats, err error)
 	GetMostCommonActivityType(userID uuid.UUID) (t vo.ActivityType, err error)
-	Update(act model2.UserActivity) error
+	Update(act *useractivity.Entity) error
 }
 type RunningProfileRepository interface {
-	Create(profile model2.RunningProfile) error
-	FindByUserID(id uuid.UUID) (rps []model2.RunningProfile, err error)
-	FindLatestUserProfile(id uuid.UUID) (rps model2.RunningProfile, err error)
-	FindByID(id uuid.UUID) (rp model2.RunningProfile, err error)
+	Create(profile *runningprofile.Entity) error
+	FindByUserID(id uuid.UUID) (rps []runningprofile.Entity, err error)
+	FindLatestUserProfile(id uuid.UUID) (rps *runningprofile.Entity, err error)
+	FindByID(id uuid.UUID) (rp *runningprofile.Entity, err error)
 }
 type PlanRepository interface {
-	Create(plan model2.Plan) error
-	FindByID(id uuid.UUID) (p model2.Plan, err error)
-	FindLatestUserPlan(id uuid.UUID) (p model2.Plan, err error)
+	Create(plan *plan.Entity) error
+	FindByID(id uuid.UUID) (p *plan.Entity, err error)
+	FindLatestUserPlan(id uuid.UUID) (p *plan.Entity, err error)
 }
 
 type Repositories struct {

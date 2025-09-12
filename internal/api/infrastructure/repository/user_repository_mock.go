@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"training-plan/internal/api/domain/model"
+	"time"
+	"training-plan/internal/api/domain/user"
 )
 
 type UserRepoMock struct {
@@ -13,16 +14,27 @@ type UserRepoMock struct {
 
 const MagicFailingUserId = "99999999-8888-1111-9999-111111111111"
 
-func (ur UserRepoMock) Create(user model.User) (*model.User, error) {
-	return &user, nil
+func (ur UserRepoMock) Create(ent *user.Entity) (*user.Entity, error) {
+	return &user.Entity{
+		ID:       uuid.New(),
+		Username: ent.Username,
+	}, nil
 }
 
-func (ur UserRepoMock) FindByID(id uuid.UUID) (user model.User, err error) {
+func (ur UserRepoMock) FindByID(id uuid.UUID) (entity *user.Entity, err error) {
 	if id == getMagicFailingID(MagicFailingUserId) {
-		return user, fmt.Errorf("user not found")
+		return &user.Entity{
+			ID:        id,
+			CreatedAt: nil,
+		}, fmt.Errorf("user not found")
 	}
 
-	return user, nil
+	now := time.Now()
+	return &user.Entity{
+		ID:        id,
+		Username:  "test-user",
+		CreatedAt: &now,
+	}, nil
 }
 
 func getMagicFailingID(id string) uuid.UUID {

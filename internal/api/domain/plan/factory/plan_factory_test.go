@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
-	model2 "training-plan/internal/api/domain/model"
 	vo "training-plan/internal/api/domain/plan/entities"
+	"training-plan/internal/api/infrastructure/database/model"
 )
 
 func TestNewPlan(t *testing.T) {
@@ -18,12 +18,12 @@ func TestNewPlan(t *testing.T) {
 
 	tests := []struct {
 		name           string
-		runningProfile model2.RunningProfile
+		runningProfile model.RunningProfile
 		expectedErr    error
 	}{
 		{
 			name: "Successful plan creation",
-			runningProfile: model2.RunningProfile{
+			runningProfile: model.RunningProfile{
 				ID:                  uuid.New(),
 				UserID:              uuid.New(),
 				GoalDistance:        "half-marathon",
@@ -45,7 +45,7 @@ func TestNewPlan(t *testing.T) {
 		},
 		{
 			name: "Invalid running days JSON",
-			runningProfile: model2.RunningProfile{
+			runningProfile: model.RunningProfile{
 				ID:                 uuid.New(),
 				UserID:             uuid.New(),
 				GoalDistance:       "half-marathon",
@@ -74,9 +74,9 @@ func TestNewPlan(t *testing.T) {
 func TestSetLongRuns(t *testing.T) {
 	t.Parallel()
 
-	weeks := make([]model2.ActivityWeek, 12)
+	weeks := make([]vo.ActivityWeek, 12)
 	for i := range weeks {
-		weeks[i] = model2.ActivityWeek{}
+		weeks[i] = vo.ActivityWeek{}
 	}
 
 	err := setLongRuns(&weeks, 6, 12)
@@ -90,9 +90,9 @@ func TestSetLongRuns(t *testing.T) {
 func TestSetEasyRuns(t *testing.T) {
 	t.Parallel()
 
-	weeks := make([]model2.ActivityWeek, 12)
+	weeks := make([]vo.ActivityWeek, 12)
 	for i := range weeks {
-		weeks[i] = model2.ActivityWeek{}
+		weeks[i] = vo.ActivityWeek{}
 	}
 
 	rd, _ := vo.RunningDaysFromJson([]byte("[1,1,1,1,1,1,1]"))
@@ -107,7 +107,7 @@ func TestSetEasyRuns(t *testing.T) {
 func TestSetThresholdRuns(t *testing.T) {
 	t.Parallel()
 
-	weeks := make([]model2.ActivityWeek, 12)
+	weeks := make([]vo.ActivityWeek, 12)
 	setThresholdRuns(&weeks)
 
 	// Add assertions to check if threshold runs are set correctly

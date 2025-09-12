@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	"time"
+	runningprofile "training-plan/internal/api/domain/running_profile"
 )
 
 type RunningProfile struct {
@@ -30,4 +31,26 @@ func (rp *RunningProfile) BeforeCreate(tx *gorm.DB) (err error) {
 	rp.ID = uuid.New()
 
 	return
+}
+
+func (rp *RunningProfile) ToDomainEntity() *runningprofile.Entity {
+	return &runningprofile.Entity{
+		ID:                  rp.ID,
+		UserID:              rp.UserID,
+		GoalDistance:        rp.GoalDistance,
+		GoalTime:            rp.GoalTime,
+		Terrain:             rp.Terrain,
+		Current5K:           &rp.Current5K,
+		Current10K:          &rp.Current10K,
+		CurrentHalfMarathon: &rp.CurrentHalfMarathon,
+		CurrentFullMarathon: &rp.CurrentFullMarathon,
+		RunningDays:         rp.RunningDays,
+		RunningDaysPerWeek:  rp.RunningDaysPerWeek,
+		LongRunDay:          rp.LongRunDay,
+		CurrentAbility:      rp.CurrentAbility,
+		PlanLength:          rp.PlanLength,
+		StartDate:           &rp.StartDate,
+		GoalDate:            &rp.GoalDate,
+		CreatedAt:           rp.CreatedAt,
+	}
 }

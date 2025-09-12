@@ -3,7 +3,6 @@ package handlers
 import (
 	"net/http"
 	"training-plan/internal/api/application"
-	"training-plan/internal/api/application/action"
 	"training-plan/internal/api/transport"
 	"training-plan/internal/api/transport/request"
 	"training-plan/internal/api/transport/response"
@@ -19,13 +18,9 @@ func CreatePlanHandler(app *application.App) func(w http.ResponseWriter, r *http
 			return
 		}
 
-		plan, err := action.CreatePlanAction(&input, app.Repos)
-		if err != nil {
-			response.BadRequestResponse(w, r, err)
-			return
-		}
+		// create plan action to implement
 
-		err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success", "plan": plan}, nil)
+		err = transport.WriteJSON(w, http.StatusOK, transport.Envelope{"msg": "success"}, nil)
 		if err != nil {
 			app.Logger.Println(err)
 			response.ServerErrorResponse(w, r)

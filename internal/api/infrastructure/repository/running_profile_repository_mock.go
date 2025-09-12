@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"time"
-	"training-plan/internal/api/domain/model"
+	runningprofile "training-plan/internal/api/domain/running_profile"
 )
 
 const MagicFailingRunningProfileId = "99999999-8888-1111-9999-111111111111"
@@ -16,11 +15,11 @@ type RunningProfileRepoMock struct {
 	_ *gorm.DB
 }
 
-func (ur RunningProfileRepoMock) Create(_ model.RunningProfile) error {
+func (ur RunningProfileRepoMock) Create(_ *runningprofile.Entity) error {
 	return nil
 }
 
-func (ur RunningProfileRepoMock) FindByID(id uuid.UUID) (rp model.RunningProfile, err error) {
+func (ur RunningProfileRepoMock) FindByID(id uuid.UUID) (rp *runningprofile.Entity, err error) {
 	if id == getMagicFailingID(MagicFailingRunningProfileId) {
 		return rp, fmt.Errorf("running profile not found")
 	}
@@ -28,7 +27,7 @@ func (ur RunningProfileRepoMock) FindByID(id uuid.UUID) (rp model.RunningProfile
 	return getRpMock(), nil
 }
 
-func (rpr RunningProfileRepoMock) FindByUserID(userID uuid.UUID) (rps []model.RunningProfile, err error) {
+func (ur RunningProfileRepoMock) FindByUserID(userID uuid.UUID) (rps []runningprofile.Entity, err error) {
 	if userID == getMagicFailingID(MagicFailingUserId) {
 		return rps, fmt.Errorf("user not found")
 	}
@@ -36,7 +35,7 @@ func (rpr RunningProfileRepoMock) FindByUserID(userID uuid.UUID) (rps []model.Ru
 	return rps, nil
 }
 
-func (rpr RunningProfileRepoMock) FindLatestUserProfile(id uuid.UUID) (rp model.RunningProfile, err error) {
+func (ur RunningProfileRepoMock) FindLatestUserProfile(id uuid.UUID) (rp *runningprofile.Entity, err error) {
 	if id == getMagicFailingID(MagicFailingUserId) || id == getMagicFailingID(MagicFailingRunningProfileUserId) {
 		return rp, fmt.Errorf("running profile not found")
 	}
@@ -44,25 +43,25 @@ func (rpr RunningProfileRepoMock) FindLatestUserProfile(id uuid.UUID) (rp model.
 	return getRpMock(), nil
 }
 
-func getRpMock() model.RunningProfile {
+func getRpMock() *runningprofile.Entity {
 	rd, _ := json.Marshal([]int{1, 1, 1, 1, 1, 1, 1})
 
-	return model.RunningProfile{
+	return &runningprofile.Entity{
 		ID:                  uuid.New(),
 		UserID:              uuid.New(),
 		GoalDistance:        "half-marathon",
 		GoalTime:            1200,
 		Terrain:             "road",
-		Current5K:           0,
-		Current10K:          0,
-		CurrentHalfMarathon: 0,
-		CurrentFullMarathon: 0,
+		Current5K:           nil,
+		Current10K:          nil,
+		CurrentHalfMarathon: nil,
+		CurrentFullMarathon: nil,
 		RunningDays:         rd,
 		RunningDaysPerWeek:  3,
 		LongRunDay:          6,
 		CurrentAbility:      "intermediate",
 		PlanLength:          12,
-		StartDate:           time.Time{},
-		GoalDate:            time.Time{},
+		StartDate:           nil,
+		GoalDate:            nil,
 	}
 }

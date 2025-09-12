@@ -4,15 +4,15 @@ import (
 	"errors"
 	"log"
 	"sync"
-	"training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/user_activity"
 	vo "training-plan/internal/api/domain/value_objects"
 	"training-plan/internal/api/infrastructure/repository"
 )
 
-func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []model.ActivityStats, err error) {
+func GetUserStatsQuery(id *string, repos *repository.Repositories) (res []useractivity.ActivityStats, err error) {
 	userID := vo.NewUserID(*id)
 
-	statsChan := make(chan model.ActivityStats, 4)
+	statsChan := make(chan useractivity.ActivityStats, 4)
 	var wg sync.WaitGroup
 	wg.Add(4)
 

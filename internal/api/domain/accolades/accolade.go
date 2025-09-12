@@ -1,4 +1,4 @@
-package model
+package accolades
 
 type Accolade struct {
 	Title       string `json:"title"`

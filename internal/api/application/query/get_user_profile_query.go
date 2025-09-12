@@ -3,8 +3,9 @@ package query
 import (
 	"log"
 	"sync"
-	model2 "training-plan/internal/api/domain/model"
 	"training-plan/internal/api/domain/plan/entities"
+	runningprofile "training-plan/internal/api/domain/running_profile"
+	useractivity "training-plan/internal/api/domain/user_activity"
 	"training-plan/internal/api/domain/value_objects"
 	"training-plan/internal/api/infrastructure/repository"
 	response2 "training-plan/internal/api/transport/response"
@@ -21,8 +22,8 @@ func GetUserProfileQuery(id *string, repos *repository.Repositories) (res respon
 	var wg sync.WaitGroup
 	wg.Add(3)
 
-	actChan := make(chan model2.ActivityStats, 1)
-	runProfChan := make(chan model2.RunningProfile, 1)
+	actChan := make(chan useractivity.ActivityStats, 1)
+	runProfChan := make(chan *runningprofile.Entity, 1)
 	favRunChan := make(chan entities.ActivityType, 1)
 
 	go func() {

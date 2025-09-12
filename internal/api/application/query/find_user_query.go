@@ -17,6 +17,6 @@ func FindUserQuery(id *string, repos *repository.Repositories) (res *response.Fi
 	return &response.FindUserResponse{
 		ID:        user.ID.String(),
 		Username:  user.Username,
-		CreatedAt: user.CreatedAt,
+		CreatedAt: *user.CreatedAt,
 	}, nil
 }

@@ -2,8 +2,8 @@ package action
 
 import (
 	"errors"
-	"training-plan/internal/api/domain/model"
 	"training-plan/internal/api/domain/plan/factory"
+	useractivity "training-plan/internal/api/domain/user_activity"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -23,14 +23,14 @@ func UploadUserActivityAction(data *request.UploadUserActivityRequest, repos *re
 		return err
 	}
 
-	ua := &model.UserActivity{
+	ua := &useractivity.Entity{
 		UserID:   data.UserID,
 		Type:     at.Type,
 		Distance: data.Distance,
 		Pace:     data.Pace,
 	}
 
-	if err := repos.UserActivityRepository.Create(*ua); err != nil {
+	if err := repos.UserActivityRepository.Create(ua); err != nil {
 		return err
 	}
 

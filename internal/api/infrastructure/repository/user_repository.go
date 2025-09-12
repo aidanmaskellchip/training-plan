@@ -4,29 +4,36 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/user"
+	"training-plan/internal/api/infrastructure/database/model"
 )
 
 type UserRepo struct {
 	db *gorm.DB
 }
 
-func (ur UserRepo) Create(user model.User) (*model.User, error) {
-	result := ur.db.Create(&user)
+func (ur UserRepo) Create(user *user.Entity) (*user.Entity, error) {
+	userModel := model.User{
+		Username: user.Username,
+	}
 
-	return &user, result.Error
+	result := ur.db.Create(&userModel)
+
+	return userModel.ToDomainEntity(), result.Error
 }
 
-func (ur UserRepo) FindByID(id uuid.UUID) (user model.User, err error) {
-	result := ur.db.First(&user, id)
+func (ur UserRepo) FindByID(id uuid.UUID) (*user.Entity, error) {
+	userModel := model.User{}
+
+	result := ur.db.First(userModel, id)
 
 	if result.RowsAffected == 0 {
-		return user, fmt.Errorf("user not found")
+		return nil, fmt.Errorf("user not found")
 	}
 
 	if result.Error != nil {
-		return user, result.Error
+		return nil, result.Error
 	}
 
-	return user, nil
+	return userModel.ToDomainEntity(), nil
 }

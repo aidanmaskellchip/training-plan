@@ -1,12 +1,11 @@
 package factory
 
 import (
-	"training-plan/internal/api/domain/activity/entities"
-	"training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
-func NewWeek() model.ActivityWeek {
-	return model.ActivityWeek{
+func NewWeek() entities.ActivityWeek {
+	return entities.ActivityWeek{
 		Mon: entities.Activity{},
 		Tue: entities.Activity{},
 		Wed: entities.Activity{},
