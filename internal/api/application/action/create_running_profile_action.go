@@ -3,8 +3,8 @@ package action
 import (
 	"errors"
 	"time"
-	"training-plan/internal/api/domain/model"
 	"training-plan/internal/api/domain/plan/entities"
+	runningprofile "training-plan/internal/api/domain/running_profile"
 	"training-plan/internal/api/infrastructure/repository"
 	"training-plan/internal/api/transport/request"
 )
@@ -35,22 +35,22 @@ func CreateRunningProfileAction(data *request.CreateRunningProfileRequest, repos
 		return err
 	}
 
-	rp := model.RunningProfile{
+	rp := &runningprofile.Entity{
 		UserID:              data.UserID,
 		GoalDistance:        data.GoalDistance,
 		GoalTime:            data.GoalTime,
 		Terrain:             data.Terrain,
-		Current5K:           data.Current5K,
-		Current10K:          data.Current10K,
-		CurrentHalfMarathon: data.CurrentHalfMarathon,
-		CurrentFullMarathon: data.CurrentFullMarathon,
+		Current5K:           &data.Current5K,
+		Current10K:          &data.Current10K,
+		CurrentHalfMarathon: &data.CurrentHalfMarathon,
+		CurrentFullMarathon: &data.CurrentFullMarathon,
 		RunningDays:         rdJson,
 		RunningDaysPerWeek:  data.RunningDaysPerWeek,
 		LongRunDay:          data.LongRunDay,
 		CurrentAbility:      data.CurrentAbility,
 		PlanLength:          data.PlanLength,
-		StartDate:           startDate,
-		GoalDate:            goalDate,
+		StartDate:           &startDate,
+		GoalDate:            &goalDate,
 	}
 
 	if err := repos.RunningProfileRepository.Create(rp); err != nil {

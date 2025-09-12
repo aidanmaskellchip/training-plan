@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	repository2 "training-plan/internal/api/infrastructure/repository"
+	"training-plan/internal/api/infrastructure/repository"
 )
 
 func TestFindUserQuery(t *testing.T) {
 	t.Parallel()
 
-	repos := repository2.NewMockRepos()
+	repos := repository.NewMockRepos()
 
 	tests := []struct {
 		name   string
@@ -24,7 +24,7 @@ func TestFindUserQuery(t *testing.T) {
 		},
 		{
 			name:   "Valid request",
-			userId: repository2.MagicFailingUserId,
+			userId: repository.MagicFailingUserId,
 			err:    fmt.Errorf("user not found"),
 		},
 	}

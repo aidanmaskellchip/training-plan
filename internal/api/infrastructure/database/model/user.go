@@ -3,6 +3,7 @@ package model
 import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"training-plan/internal/api/domain/user"
 )
 
 type User struct {
@@ -18,4 +19,12 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 	u.ID = uuid.New()
 
 	return
+}
+
+func (u *User) ToDomainEntity() *user.Entity {
+	return &user.Entity{
+		ID:        u.ID,
+		Username:  u.Username,
+		CreatedAt: &u.CreatedAt,
+	}
 }

@@ -3,8 +3,7 @@ package factory
 import (
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"training-plan/internal/api/domain/activity/entities"
-	"training-plan/internal/api/domain/model"
+	"training-plan/internal/api/domain/plan/entities"
 )
 
 func TestNewWeek(t *testing.T) {
@@ -12,7 +11,7 @@ func TestNewWeek(t *testing.T) {
 
 	week := NewWeek()
 
-	assert.Equal(t, model.ActivityWeek{
+	assert.Equal(t, entities.ActivityWeek{
 		Mon: entities.Activity{},
 		Tue: entities.Activity{},
 		Wed: entities.Activity{},

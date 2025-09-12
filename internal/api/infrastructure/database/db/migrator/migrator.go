@@ -3,7 +3,7 @@ package migrator
 import (
 	"fmt"
 	"gorm.io/gorm"
-	model2 "training-plan/internal/api/domain/model"
+	"training-plan/internal/api/infrastructure/database/model"
 )
 
 var database *gorm.DB
@@ -19,19 +19,19 @@ func create(i interface{}) error {
 func Migrate(con *gorm.DB) (err error) {
 	database = con
 
-	if err := create(&model2.User{}); err != nil {
+	if err := create(&model.User{}); err != nil {
 		return fmt.Errorf("failed to migrate users: %w", err)
 	}
 
-	if err := create(&model2.RunningProfile{}); err != nil {
+	if err := create(&model.RunningProfile{}); err != nil {
 		return fmt.Errorf("failed to migrate running profiles: %w", err)
 	}
 
-	if err := create(&model2.UserActivity{}); err != nil {
+	if err := create(&model.UserActivity{}); err != nil {
 		return fmt.Errorf("failed to migrate user activities: %w", err)
 	}
 
-	if err := create(&model2.Plan{}); err != nil {
+	if err := create(&model.Plan{}); err != nil {
 		return fmt.Errorf("failed to migrate plans: %w", err)
 	}
 

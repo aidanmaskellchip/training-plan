@@ -5,16 +5,26 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	entities2 "training-plan/internal/api/domain/activity/entities"
-	model2 "training-plan/internal/api/domain/model"
 	"training-plan/internal/api/domain/plan/entities"
+	"training-plan/internal/api/domain/user_activity"
+	"training-plan/internal/api/infrastructure/database/model"
 )
 
 type UserActivityRepo struct {
 	db *gorm.DB
 }
 
-func (ur UserActivityRepo) Update(act model2.UserActivity) error {
-	result := ur.db.Where("user_id = ?", act.UserID).Save(act)
+func (ur UserActivityRepo) Update(act *useractivity.Entity) error {
+	actModel := model.UserActivity{
+		ID:        act.ID,
+		UserID:    act.UserID,
+		Type:      act.Type,
+		Distance:  act.Distance,
+		Pace:      act.Pace,
+		Intervals: act.Intervals,
+	}
+
+	result := ur.db.Where("user_id = ?", act.UserID).Save(actModel)
 
 	if result.Error != nil {
 		return result.Error
@@ -27,27 +37,38 @@ func (ur UserActivityRepo) Update(act model2.UserActivity) error {
 	return nil
 }
 
-func (ur UserActivityRepo) Create(ua model2.UserActivity) error {
-	result := ur.db.Create(&ua)
+func (ur UserActivityRepo) Create(act *useractivity.Entity) error {
+	actModel := model.UserActivity{
+		ID:        act.ID,
+		UserID:    act.UserID,
+		Type:      act.Type,
+		Distance:  act.Distance,
+		Pace:      act.Pace,
+		Intervals: act.Intervals,
+	}
+
+	result := ur.db.Create(&actModel)
 
 	return result.Error
 }
 
-func (ur UserActivityRepo) FindByID(id uuid.UUID) (ua model2.UserActivity, err error) {
+func (ur UserActivityRepo) FindByID(id uuid.UUID) (*useractivity.Entity, error) {
+	ua := &model.UserActivity{}
+
 	result := ur.db.First(&ua, id)
 
 	if result.RowsAffected == 0 {
-		return ua, fmt.Errorf("activity not found")
+		return nil, fmt.Errorf("activity not found")
 	}
 
 	if result.Error != nil {
-		return ua, result.Error
+		return nil, result.Error
 	}
 
-	return ua, nil
+	return ua.ToDomainEntity(), nil
 }
 
-func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model2.ActivityStats, err error) {
+func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats useractivity.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Where("user_id = ?", userID).
@@ -55,12 +76,12 @@ func (ur UserActivityRepo) GetFastestUserActivity(userID uuid.UUID) (stats model
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = entities2.STATS_TYPE_FASTEST_USER
+	stats.Title = entities2.StatsTypeFastestUser
 
 	return
 }
 
-func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model2.ActivityStats, err error) {
+func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats useractivity.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Where("user_id = ?", userID).
@@ -68,31 +89,31 @@ func (ur UserActivityRepo) GetLongestUserActivity(userID uuid.UUID) (stats model
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = entities2.STATS_TYPE_LONGEST_USER
+	stats.Title = entities2.StatsTypeLongestUser
 
 	return
 }
 
-func (ur UserActivityRepo) GetFastestCommunityActivity() (stats model2.ActivityStats, err error) {
+func (ur UserActivityRepo) GetFastestCommunityActivity() (stats useractivity.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Order("pace ASC").
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = entities2.STATS_TYPE_FASTEST_COMMUNITY
+	stats.Title = entities2.StatsTypeFastestCommunity
 
 	return
 }
 
-func (ur UserActivityRepo) GetLongestCommunityActivity() (stats model2.ActivityStats, err error) {
+func (ur UserActivityRepo) GetLongestCommunityActivity() (stats useractivity.ActivityStats, err error) {
 	err = ur.db.Table("user_activities").
 		Select("type as Type, pace as Pace, user_id as UserID, distance as Distance").
 		Order("distance DESC").
 		Row().
 		Scan(&stats.Type, &stats.Pace, &stats.UserID, &stats.Distance)
 
-	stats.Title = entities2.STATS_TYPE_LONGEST_COMMUNITY
+	stats.Title = entities2.StatsTypeLongestCommunity
 
 	return
 }

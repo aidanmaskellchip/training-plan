@@ -1,4 +1,4 @@
-package model
+package useractivity
 
 type ActivityStats struct {
 	Title    string  `json:"title"`

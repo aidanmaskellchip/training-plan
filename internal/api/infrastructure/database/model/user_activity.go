@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 	vo "training-plan/internal/api/domain/plan/entities"
+	useractivity "training-plan/internal/api/domain/user_activity"
 )
 
 type UserActivity struct {
@@ -20,4 +21,15 @@ func (ua *UserActivity) BeforeCreate(tx *gorm.DB) (err error) {
 	ua.ID = uuid.New()
 
 	return
+}
+
+func (ua *UserActivity) ToDomainEntity() *useractivity.Entity {
+	return &useractivity.Entity{
+		ID:        ua.ID,
+		UserID:    ua.UserID,
+		Type:      ua.Type,
+		Distance:  ua.Distance,
+		Pace:      ua.Pace,
+		Intervals: ua.Intervals,
+	}
 }

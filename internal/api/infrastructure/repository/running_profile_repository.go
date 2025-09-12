@@ -4,57 +4,87 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"training-plan/internal/api/domain/model"
+	runningprofile "training-plan/internal/api/domain/running_profile"
+	"training-plan/internal/api/infrastructure/database/model"
 )
 
 type RunningProfileRepo struct {
 	db *gorm.DB
 }
 
-func (rpr RunningProfileRepo) Create(profile model.RunningProfile) error {
-	result := rpr.db.Create(&profile)
+func (rpr RunningProfileRepo) Create(profile *runningprofile.Entity) error {
+	runningProfile := model.RunningProfile{
+		ID:                  profile.ID,
+		UserID:              profile.UserID,
+		GoalDistance:        profile.GoalDistance,
+		GoalTime:            profile.GoalTime,
+		Terrain:             profile.Terrain,
+		Current5K:           *profile.Current5K,
+		Current10K:          *profile.Current10K,
+		CurrentHalfMarathon: *profile.CurrentHalfMarathon,
+		CurrentFullMarathon: *profile.CurrentFullMarathon,
+		RunningDays:         profile.RunningDays,
+		RunningDaysPerWeek:  profile.RunningDaysPerWeek,
+		LongRunDay:          profile.LongRunDay,
+		CurrentAbility:      profile.CurrentAbility,
+		PlanLength:          profile.PlanLength,
+		StartDate:           *profile.StartDate,
+		GoalDate:            *profile.GoalDate,
+	}
+
+	result := rpr.db.Create(&runningProfile)
 
 	return result.Error
 }
 
-func (rpr RunningProfileRepo) FindByID(id uuid.UUID) (rp model.RunningProfile, err error) {
-	result := rpr.db.First(&rp, id)
+func (rpr RunningProfileRepo) FindByID(id uuid.UUID) (*runningprofile.Entity, error) {
+	rp := &model.RunningProfile{}
+
+	result := rpr.db.First(rp, id)
 
 	if result.RowsAffected == 0 {
-		return rp, fmt.Errorf("running profile not found")
+		return nil, fmt.Errorf("running profile not found")
 	}
 
 	if result.Error != nil {
-		return rp, result.Error
+		return nil, result.Error
 	}
 
-	return rp, nil
+	return rp.ToDomainEntity(), nil
 }
 
-func (rpr RunningProfileRepo) FindByUserID(userID uuid.UUID) (rps []model.RunningProfile, err error) {
+func (rpr RunningProfileRepo) FindByUserID(userID uuid.UUID) (ents []runningprofile.Entity, err error) {
+	var rps []model.RunningProfile
+
 	result := rpr.db.Where("user_id = ?", userID).Find(&rps)
 
 	if result.RowsAffected == 0 {
-		return rps, fmt.Errorf("running profiles not found")
+		return ents, fmt.Errorf("running profiles not found")
 	}
 
 	if result.Error != nil {
-		return rps, result.Error
+		return ents, result.Error
 	}
 
-	return rps, nil
+	for _, rp := range rps {
+		ents = append(ents, *rp.ToDomainEntity())
+	}
+
+	return ents, nil
 }
 
-func (rpr RunningProfileRepo) FindLatestUserProfile(id uuid.UUID) (rp model.RunningProfile, err error) {
+func (rpr RunningProfileRepo) FindLatestUserProfile(id uuid.UUID) (*runningprofile.Entity, error) {
+	rp := model.RunningProfile{}
+
 	result := rpr.db.Order("created_at desc").Where("user_id = ?", id).Find(&rp)
 
 	if result.RowsAffected == 0 {
-		return rp, fmt.Errorf("running profile not found")
+		return nil, fmt.Errorf("running profile not found")
 	}
 
 	if result.Error != nil {
-		return rp, result.Error
+		return nil, result.Error
 	}
 
-	return rp, nil
+	return rp.ToDomainEntity(), nil
 }

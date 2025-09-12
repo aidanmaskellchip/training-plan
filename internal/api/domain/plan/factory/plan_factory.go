@@ -3,23 +3,23 @@ package factory
 import (
 	"fmt"
 	"sync"
-	model2 "training-plan/internal/api/domain/model"
 	"training-plan/internal/api/domain/plan/entities"
+	"training-plan/internal/api/infrastructure/database/model"
 )
 
-func NewPlan(rp model2.RunningProfile) (p model2.Plan, err error) {
+func NewPlan(rp model.RunningProfile) (p model.Plan, err error) {
 	p.UserID = rp.UserID
 	p.Length = rp.PlanLength
 	p.GoalDistance = rp.GoalDistance
 
-	var weeks []model2.ActivityWeek
+	var weeks []entities.ActivityWeek
 	for i := 0; i < rp.PlanLength; i++ {
 		weeks = append(weeks, NewWeek())
 	}
 
 	rd, err := entities.RunningDaysFromJson(rp.RunningDays)
 	if err != nil {
-		return model2.Plan{}, err
+		return model.Plan{}, err
 	}
 
 	wg := sync.WaitGroup{}
@@ -47,7 +47,7 @@ func NewPlan(rp model2.RunningProfile) (p model2.Plan, err error) {
 
 	for e := range errChn {
 		if e != nil {
-			return model2.Plan{}, e
+			return model.Plan{}, e
 		}
 	}
 
@@ -58,7 +58,7 @@ func NewPlan(rp model2.RunningProfile) (p model2.Plan, err error) {
 	return p, nil
 }
 
-func setLongRuns(weeks *[]model2.ActivityWeek, longRunDay int, planLength int) error {
+func setLongRuns(weeks *[]entities.ActivityWeek, longRunDay int, planLength int) error {
 	if _, ok := entities.HalfMarathonLongDistancesMap[planLength]; !ok {
 		return fmt.Errorf("invalid plan length: %d", planLength)
 	}
@@ -85,7 +85,7 @@ func setLongRuns(weeks *[]model2.ActivityWeek, longRunDay int, planLength int) e
  * Easy run day is the first available day that is not long run day
  */
 func setEasyRuns(
-	weeks *[]model2.ActivityWeek,
+	weeks *[]entities.ActivityWeek,
 	rd entities.RunningDays,
 	longRunDay int,
 	planLength int,
@@ -117,6 +117,6 @@ func setEasyRuns(
 	return nil
 }
 
-func setThresholdRuns(weeks *[]model2.ActivityWeek) {
+func setThresholdRuns(weeks *[]entities.ActivityWeek) {
 
 }
