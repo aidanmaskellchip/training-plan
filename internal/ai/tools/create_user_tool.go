@@ -14,7 +14,6 @@ func NewCreateUserTool(apiClient *client.APIClient) *tool.FunctionTool {
 		func(ctx context.Context, params map[string]interface{}) (interface{}, error) {
 			username := params["username"].(string)
 
-			// Create user if doesn't exist
 			err := apiClient.CreateUser(username)
 			if err != nil {
 				return nil, fmt.Errorf("failed to create user: %w", err)
@@ -22,14 +21,5 @@ func NewCreateUserTool(apiClient *client.APIClient) *tool.FunctionTool {
 
 			return fmt.Sprintf("User: %s created successfully.", username), nil
 		},
-	).WithSchema(map[string]interface{}{
-		"type": "object",
-		"properties": map[string]interface{}{
-			"username": map[string]interface{}{
-				"type":        "string",
-				"description": "The username of the user to create",
-			},
-		},
-		"required": []string{"username"},
-	})
+	).WithSchema(loadSchemaFromFile("./api_specs/create_user_schema.yaml", "/v1/users/create", "post"))
 }

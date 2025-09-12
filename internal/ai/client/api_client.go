@@ -20,14 +20,16 @@ func NewAPIClient(baseURL string) *APIClient {
 
 func (c *APIClient) CreateUser(username string) error {
 	body := bytes.NewBufferString(fmt.Sprintf(`{"username":"%s"}`, username))
+
 	resp, err := c.client.Post(c.baseURL+"/users/create", "application/json", body)
 	if err != nil {
 		return err
 	}
-	defer func() { _ = resp.Body.Close() }()
 
-	if resp.StatusCode != http.StatusCreated {
-		return fmt.Errorf("failed to create user: %s", resp.Status)
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 300 {
+		return fmt.Errorf("API error: %d", resp.StatusCode)
 	}
 
 	return nil

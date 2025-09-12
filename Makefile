@@ -40,9 +40,10 @@ docker-up:
 run-migrations:
 	make go-run-cmd cmd='go run cmd/fixture/migrate/main.go'
 
-##############
-##### Go #####
-##############
+################################################
+################# GO ###########################
+################################################
+
 go-run-cmd:
 	docker run --rm --env-file ./.env -v ${PWD}:/app --network ${DOCKER_NETWORK_DB_REF} ${DOCKER_GO_CMD_IMAGE_REF} ${cmd}
 
@@ -60,3 +61,11 @@ go-vendor-download:
 
 go-lint:
 	docker run --rm -v $(PWD):/app -w /app golangci/golangci-lint:v2.4.0 golangci-lint run -v
+
+
+#################################################
+################# AI AGENT ######################
+#################################################
+
+run-agent:
+	go run ./cmd/ai_agent/main.go

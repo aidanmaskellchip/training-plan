@@ -83,7 +83,7 @@ The project now includes an experimental AI-powered chatbot that can interact wi
 - Start the local server on port 1234.
 3. **Run the AI Agent:**
    ```bash
-   go run cmd/ai-agent/main.go
+   go run cmd/ai_agent/main.go
    ```
    This will start a command-line interface where you can interact with the AI agent.
 
