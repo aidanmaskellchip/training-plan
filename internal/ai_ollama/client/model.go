@@ -9,8 +9,6 @@ import (
 
 type D map[string]any
 
-// =============================================================================
-
 type Error struct {
 	Err struct {
 		Message string `json:"message"`
@@ -21,16 +19,8 @@ func (err *Error) Error() string {
 	return err.Err.Message
 }
 
-// =============================================================================
-
 type Time struct {
 	time.Time
-}
-
-func ToTime(sec int64) Time {
-	return Time{
-		Time: time.Unix(sec, 0),
-	}
 }
 
 func (t *Time) UnmarshalJSON(data []byte) error {
@@ -50,8 +40,6 @@ func (t Time) MarshalJSON() ([]byte, error) {
 	data := strconv.Itoa(int(t.Unix()))
 	return []byte(data), nil
 }
-
-// =============================================================================
 
 type Function struct {
 	Name      string
@@ -110,8 +98,6 @@ type ChatSSE struct {
 	Error   string          `json:"error"`
 }
 
-// =============================================================================
-
 type ChatMessage struct {
 	Role    string `json:"role"`
 	Content string `json:"content"`
@@ -129,8 +115,6 @@ type Chat struct {
 	Model   string       `json:"model"`
 	Choices []ChatChoice `json:"choices"`
 }
-
-// =============================================================================
 
 type EmbeddingData struct {
 	Index     int       `json:"index"`

@@ -41,8 +41,6 @@ func init() {
 	}
 }
 
-// =============================================================================
-
 func main() {
 	if err := run(); err != nil {
 		log.Fatal(err)
@@ -125,12 +123,10 @@ func (a *Agent) Run(ctx context.Context) error {
 
 		var chunks []string
 
-		// WE WILL CREATE FLAGS TO KNOW WHEN WE ARE PROCESSING REASONING CONTENT.
-
+		// create flags to track reasoning state
 		reasonThinking := false  // GPT models provide a Reasoning field.
 		contentThinking := false // Other reasoning models use <think> tags.
 
-		// WE WILL ADD SOME IMPROVED FORMATTING.
 		fmt.Print("\n")
 
 		for resp := range ch {
@@ -141,15 +137,13 @@ func (a *Agent) Run(ctx context.Context) error {
 			switch {
 			case resp.Choices[0].Delta.Content != "":
 
-				// WE NEED TO RESET THE REASONING FLAG ONCE THE MODEL IS
-				// DONE REASONING.
+				// reset reasoning flag when the model has finished reasoning
 				if reasonThinking {
 					reasonThinking = false
 					fmt.Print("\n\n")
 				}
 
-				// WE NEED TO CHECK IF THE REASONING IS HAPPENING VIA
-				// <think> TAGS.
+				// check for <think> tags to set contentThinking flag
 				switch resp.Choices[0].Delta.Content {
 				case "<think>":
 					contentThinking = true
@@ -159,8 +153,6 @@ func (a *Agent) Run(ctx context.Context) error {
 					continue
 				}
 
-				// WE NEED TO ADJUST OUR ORIGINAL SWITCH TO TAKE INTO ACCOUNT
-				// WE MIGHT HAVE BEEN PROCESSING <think> TAGS.
 				switch {
 				case !contentThinking:
 					fmt.Print(resp.Choices[0].Delta.Content)
@@ -170,8 +162,6 @@ func (a *Agent) Run(ctx context.Context) error {
 					fmt.Printf("\u001b[91m%s\u001b[0m", resp.Choices[0].Delta.Content)
 				}
 
-			// WE NEED TO CHECK IF THE MODEL IS THINKING VIA THIS REASONING
-			// FIELD AND FORMAT THE RESPONSE PROPERLY.
 			case resp.Choices[0].Delta.Reasoning != "":
 				if !reasonThinking {
 					fmt.Print("\n")
@@ -188,12 +178,10 @@ func (a *Agent) Run(ctx context.Context) error {
 		if len(chunks) > 0 {
 			fmt.Print("\n")
 
-			// REMOVING <think> TAGS FROM THE CONTENT WILL LEAVE EXTRA CRLF
-			// CHARACTERS WE NEED TO REMOVE.
+			// remove leading CRLF from content
 			content := strings.Join(chunks, " ")
 			content = strings.TrimLeft(content, "\n")
 
-			// WE NEED TO CHECK IF THE CONTENT IS EMPTY AFTER REMOVING CRLF.
 			if content != "" {
 				conversation = append(conversation, client.D{
 					"role":    "assistant",

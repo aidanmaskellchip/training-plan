@@ -35,11 +35,7 @@ var defaultClient = http.Client{
 	},
 }
 
-// =============================================================================
-
 type Logger func(context.Context, string, ...any)
-
-var NoopLogger = func(ctx context.Context, msg string, v ...any) {}
 
 var StdoutLogger = func(ctx context.Context, msg string, v ...any) {
 	s := fmt.Sprintf("msg: %s", msg)
@@ -48,8 +44,6 @@ var StdoutLogger = func(ctx context.Context, msg string, v ...any) {
 	}
 	log.Println(s)
 }
-
-// =============================================================================
 
 type Client struct {
 	log  Logger
@@ -69,12 +63,7 @@ func New(log Logger, options ...func(cln *Client)) *Client {
 	return &cln
 }
 
-func WithClient(http *http.Client) func(cln *Client) {
-	return func(cln *Client) {
-		cln.http = http
-	}
-}
-
+// Do perform the HTTP request to the specified endpoint using the given method and body.
 func (cln *Client) Do(ctx context.Context, method string, endpoint string, body D, v any) error {
 	resp, err := do(ctx, cln, method, endpoint, body)
 	if err != nil {
@@ -104,8 +93,6 @@ func (cln *Client) Do(ctx context.Context, method string, endpoint string, body 
 	return nil
 }
 
-// =============================================================================
-
 type SSEClient[T any] struct {
 	*Client
 }
@@ -118,6 +105,7 @@ func NewSSE[T any](log Logger, options ...func(cln *Client)) *SSEClient[T] {
 	}
 }
 
+// Do perform the HTTP request to the specified endpoint using the given method and body.
 func (cln *SSEClient[T]) Do(ctx context.Context, method string, endpoint string, body D, ch chan T) error {
 	resp, err := do(ctx, cln.Client, method, endpoint, body)
 	if err != nil {
@@ -157,8 +145,7 @@ func (cln *SSEClient[T]) Do(ctx context.Context, method string, endpoint string,
 	return nil
 }
 
-// =============================================================================
-
+// do perform the HTTP request to the specified endpoint using the given method and body.
 func do(ctx context.Context, cln *Client, method string, endpoint string, body any) (*http.Response, error) {
 	var statusCode int
 
