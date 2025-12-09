@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/pontus-devoteam/agent-sdk-go/pkg/runner"
-	"training-plan/internal/ai/agent"
-	"training-plan/internal/ai/config"
-	handlers "training-plan/internal/ai/handler"
+	"training-plan/internal/ai_lmstudio/agent"
+	"training-plan/internal/ai_lmstudio/config"
+	handlers "training-plan/internal/ai_lmstudio/handler"
 )
 
 func main() {

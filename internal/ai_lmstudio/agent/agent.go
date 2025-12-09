@@ -2,9 +2,9 @@ package agent
 
 import (
 	"github.com/pontus-devoteam/agent-sdk-go/pkg/agent"
-	"training-plan/internal/ai/client"
-	"training-plan/internal/ai/config"
-	"training-plan/internal/ai/tools"
+	"training-plan/internal/ai_lmstudio/client"
+	"training-plan/internal/ai_lmstudio/config"
+	"training-plan/internal/ai_lmstudio/tools"
 )
 
 func NewTrainingPlanAgent(cfg *config.AIConfig) *agent.Agent {

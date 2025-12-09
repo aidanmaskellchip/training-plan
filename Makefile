@@ -67,5 +67,12 @@ go-lint:
 ################# AI AGENT ######################
 #################################################
 
-run-agent:
-	go run ./cmd/ai_agent/main.go
+run-lmstudio-agent:
+	go run ./cmd/ai_agent_lmstudio/main.go
+
+run-ollama-agent:
+	export OLLAMA_CONTEXT_LENGTH=$(OLLAMA_CONTEXT_LENGTH) && \
+	go run cmd/ai_agent_ollama/main.go
+
+gemini-review:
+	gemini -p "Give a code review of the following Go code, focusing on best practices, potential bugs, and performance improvements. Provide specific suggestions for improvement. The changes are: $$(git diff)"

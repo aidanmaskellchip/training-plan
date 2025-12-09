@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/pontus-devoteam/agent-sdk-go/pkg/tool"
-	"training-plan/internal/ai/client"
+	"training-plan/internal/ai_lmstudio/client"
 )
 
 func NewCreateUserTool(apiClient *client.APIClient) *tool.FunctionTool {

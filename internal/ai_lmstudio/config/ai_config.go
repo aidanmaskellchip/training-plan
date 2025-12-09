@@ -22,7 +22,7 @@ func NewAIConfig() *AIConfig {
 }
 
 func loadSystemInstructions() string {
-	content, err := os.ReadFile("internal/ai/config/system_instructions.txt")
+	content, err := os.ReadFile("internal/ai_lmstudio/config/system_instructions.txt")
 	if err != nil {
 		// Fallback to default if the file can't be read
 		return "You are a helpful assistant for application designed to generate personalized running training plans"

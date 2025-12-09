@@ -2,7 +2,7 @@ package agent
 
 import (
 	"github.com/pontus-devoteam/agent-sdk-go/pkg/model/providers/lmstudio"
-	"training-plan/internal/ai/config"
+	"training-plan/internal/ai_lmstudio/config"
 )
 
 func NewLMStudioProvider(cfg *config.AIConfig) *lmstudio.Provider {
